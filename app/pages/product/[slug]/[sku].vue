@@ -15,9 +15,9 @@ const related = ref([]);
 const loadProduct = async () => {
   const response = await productStore.getProduct(
     route.params.slug,
-    route.params.code
+    route.params.sku
   );
-  product.value = response.product;
+  product.value = response.data;
   related.value = response.related;
 };
 

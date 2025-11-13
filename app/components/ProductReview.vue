@@ -1,17 +1,16 @@
 <script setup>
-const form = ref({
-  product_id: 1,
-  user_id: 5,
-  rating: 4.0,
-  comment: "",
-  categories: [
-    { category: "cleanliness", rating: 4.0 },
-    { category: "safety_security", rating: 4.0 },
-    { category: "staff", rating: 4.0 },
-    { category: "amenities", rating: 3.5 },
-    { category: "location", rating: 3.0 },
-    { category: "value", rating: 4.2 },
-  ],
+const route = useRoute();
+const reviewStore = useReviewStore();
+
+const reviews = ref([]);
+
+const loadReviews = async () => {
+  const response = await reviewStore.getReviews(route.params.sku);
+  reviews.value = response.data;
+};
+
+onMounted(() => {
+  loadReviews();
 });
 </script>
 
@@ -22,129 +21,122 @@ const form = ref({
 
     <!-- Overall Rating -->
     <div class="flex items-start gap-8">
+      <!-- Average Rating -->
       <div class="text-center">
-        <div class="text-4xl font-bold text-primary">4.0</div>
+        <div class="text-4xl font-bold text-primary">
+          {{ reviews?.average_rating }}
+        </div>
         <div class="flex items-center gap-1 text-yellow-500">
-          <IconsIconStarFill class="size-5" />
-          <IconsIconStarFill class="size-5" />
-          <IconsIconStarFill class="size-5" />
-          <IconsIconStarFill class="size-5" />
-          <IconsIconStar class="size-5" />
+          <template v-for="i in 5" :key="i">
+            <IconsIconStarFill
+              v-if="i <= Math.floor(reviews?.average_rating)"
+              class="size-5 icon__star filled"
+            />
+            <IconsIconStar v-else class="size-5 icon__star" />
+          </template>
         </div>
-        <div class="text-sm text-gray-500 mt-1">35k ratings</div>
+        <div class="text-sm text-gray-500 mt-1">
+          {{ reviews?.total_reviews }} ratings
+        </div>
       </div>
+
       <div class="flex-1 space-y-1">
-        <!-- Ratings bar -->
-        <div class="flex items-center text-sm text-gray-500 gap-2">
-          <span>5.0</span>
-          <div class="bg-gray-200 rounded-full w-full h-2 relative">
-            <div
-              class="bg-primary h-2 rounded-full absolute left-0 top-0"
-              style="width: 80%"
-            ></div>
+        <template v-for="(count, star) in reviews.ratings" :key="star">
+          <div class="flex items-center text-sm text-gray-500 gap-2">
+            <span>{{ star }}.0</span>
+            <div class="bg-gray-200 rounded-full w-full h-2 relative">
+              <div
+                class="bg-primary h-2 rounded-full absolute left-0 top-0"
+                :style="{ width: (count / reviews?.total_reviews) * 100 + '%' }"
+              ></div>
+            </div>
+            <span>{{ count }}</span>
           </div>
-          <span>14k</span>
-        </div>
-        <div class="flex items-center text-sm text-gray-500 gap-2">
-          <span>4.0</span>
-          <div class="bg-gray-200 rounded-full w-full h-2 relative">
-            <div
-              class="bg-primary h-2 rounded-full absolute left-0 top-0"
-              style="width: 60%"
-            ></div>
-          </div>
-          <span>6k</span>
-        </div>
-        <div class="flex items-center text-sm text-gray-500 gap-2">
-          <span>3.0</span>
-          <div class="bg-gray-200 rounded-full w-full h-2 relative">
-            <div
-              class="bg-primary h-2 rounded-full absolute left-0 top-0"
-              style="width: 40%"
-            ></div>
-          </div>
-          <span>4k</span>
-        </div>
-        <div class="flex items-center text-sm text-gray-500 gap-2">
-          <span>2.0</span>
-          <div class="bg-gray-200 rounded-full w-full h-2 relative">
-            <div
-              class="bg-primary h-2 rounded-full absolute left-0 top-0"
-              style="width: 20%"
-            ></div>
-          </div>
-          <span>800</span>
-        </div>
-        <div class="flex items-center text-sm text-gray-500 gap-2">
-          <span>1.0</span>
-          <div class="bg-gray-200 rounded-full w-full h-2 relative">
-            <div
-              class="bg-primary h-2 rounded-full absolute left-0 top-0"
-              style="width: 10%"
-            ></div>
-          </div>
-          <span>900</span>
-        </div>
+        </template>
       </div>
     </div>
 
     <!-- Review List -->
     <div class="mt-8 space-y-6">
-      <!-- Single Review -->
-      <div class="border rounded p-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="font-semibold">Alexander Rity</div>
-            <span class="text-gray-400 text-sm">4 months ago</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <span class="font-semibold">5.0</span>
-            <div class="flex items-center gap-0.5">
-              <IconsIconStar v-for="item in 5" class="size-4" />
+      <template v-if="reviews.data">
+        <div
+          v-for="review in reviews.data"
+          :key="review.id"
+          class="border border-gray-200 rounded-xl p-4 transition duration-200"
+        >
+          <!-- Header: User + Verified + Rating -->
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <img
+                :src="review.user?.photo_url"
+                :alt="review.user?.name"
+                class="h-10 w-10 rounded-full object-cover"
+              />
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-800">{{
+                    review.user?.name
+                  }}</span>
+                  <span
+                    v-if="review.is_verified_purchase"
+                    class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-medium"
+                    >Verified Purchase</span
+                  >
+                </div>
+                <span class="text-gray-400 text-sm">{{
+                  review.created_at?.human
+                }}</span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="font-semibold text-gray-800">{{
+                review.rating.toFixed(1)
+              }}</span>
+              <div class="flex items-center gap-0.5">
+                <template v-for="i in 5" :key="i">
+                  <IconsIconStarFill
+                    v-if="i <= Math.floor(review?.rating)"
+                    class="w-4 h-4 text-yellow-400"
+                  />
+                  <IconsIconStar v-else class="w-4 h-4 text-gray-300" />
+                </template>
+              </div>
             </div>
           </div>
-        </div>
-        <p class="text-gray-700 mt-2">
-          Easy booking, great value! Cozy rooms at a reasonable price in
-          Sheffield's vibrant center. Surprisingly quiet with nearby Traveller’s
-          accommodations. Highly recommended!
-        </p>
-        <div class="flex gap-2 mt-3">
-          <img
-            class="h-16 w-16 object-cover rounded"
-            src="https://source.unsplash.com/random/80x80?room1"
-          />
-          <img
-            class="h-16 w-16 object-cover rounded"
-            src="https://source.unsplash.com/random/80x80?room2"
-          />
-          <img
-            class="h-16 w-16 object-cover rounded"
-            src="https://source.unsplash.com/random/80x80?room3"
-          />
-        </div>
-      </div>
 
-      <!-- Another Review -->
-      <div class="border rounded p-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="font-semibold">Emma Creight</div>
-            <span class="text-gray-400 text-sm">4 months ago</span>
+          <div
+            class="text-gray-700 mt-3 text-sm leading-relaxed"
+            v-html="review.review"
+          ></div>
+
+          <div
+            v-if="review.images && review.images.length"
+            class="flex gap-2 mt-4 overflow-x-auto"
+          >
+            <img
+              v-for="(img, idx) in review.images"
+              :key="idx"
+              :src="img"
+              alt="Review Image"
+              class="h-16 w-16 object-cover rounded-lg shrink-0 border border-gray-200"
+            />
           </div>
-          <div class="flex items-center gap-2">
-            <span class="font-semibold">4.0</span>
-            <div class="flex items-center gap-0.5">
-              <IconsIconStar v-for="item in 5" class="size-4" />
-            </div>
+
+          <!-- Helpful / Not Helpful -->
+          <div class="flex gap-4 mt-4 text-gray-500 text-sm">
+            <button
+              class="flex items-center gap-1 hover:text-primary transition"
+            >
+              👍 {{ review.helpful_count }}
+            </button>
+            <button
+              class="flex items-center gap-1 hover:text-primary transition"
+            >
+              👎 {{ review.not_helpful_count }}
+            </button>
           </div>
         </div>
-        <p class="text-gray-700 mt-2">
-          Effortless booking, unbeatable affordability! Small yet comfortable
-          rooms in the heart of Sheffield’s nightlife hub. Surrounded by elegant
-          housing, it’s a peaceful gem. Thumbs up!
-        </p>
-      </div>
+      </template>
     </div>
 
     <!-- Leave a Review Form -->
@@ -159,12 +151,7 @@ const form = ref({
               :key="'overall-' + n"
               class="inline-flex items-center space-x-1"
             >
-              <input
-                type="radio"
-                :value="n"
-                v-model="form.rating"
-                class="accent-primary"
-              />
+              <input type="radio" :value="n" class="accent-primary" />
               <span>{{ n }}</span>
             </label>
           </div>
