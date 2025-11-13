@@ -7,9 +7,9 @@ const { items } = storeToRefs(cartStore);
 
 const couponCode = ref("WELCOME");
 
-const couponApply = () => {
+const couponApply = async () => {
   if (!couponCode.value) return;
-  cartStore.couponApply(couponCode.value);
+  await cartStore.couponApply(couponCode.value);
 };
 
 useSchemaOrg([

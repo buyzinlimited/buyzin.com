@@ -9,7 +9,7 @@ export const useCartStore = defineStore("cart", {
     items: [],
     coupon: null,
     discountAmount: 0,
-    shippingCost: 120, // default shipping cost
+    shippingCost: 0, // default shipping cost
     taxRate: 0.05, // 5% VAT
   }),
 
@@ -115,11 +115,11 @@ export const useCartStore = defineStore("cart", {
         if (response.status === 200) {
           this.coupon = response.data.coupon || { code };
           this.discountAmount = response.data.discount;
-          this.$toast(response.data?.message, "success");
+          $toast("Coupon applied successfully!", "success");
         }
       } catch (error) {
         this.errors = error.response.data;
-        this.$toast(error.response.data?.message, "error");
+        $toast("Invalid coupon code", "error");
       } finally {
         this.loading = false;
       }

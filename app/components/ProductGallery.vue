@@ -52,7 +52,7 @@ const setMainImage = (img) => {
           v-for="(gallery, index) in product.gallery"
           :key="index"
           @click="setMainImage(gallery)"
-          class="w-20 h-20 border-2 rounded overflow-hidden cursor-pointer transition-all duration-200"
+          class="w-28 h-28 border-2 rounded overflow-hidden cursor-pointer transition-all duration-200"
           :class="{
             'border-primary': mainImage === gallery,
             'border-border': mainImage !== gallery,

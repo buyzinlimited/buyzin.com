@@ -13,6 +13,15 @@ const loadHome = async () => {
 onMounted(() => {
   loadHome();
 });
+
+const items = [
+  "https://picsum.photos/640/640?random=1",
+  "https://picsum.photos/640/640?random=2",
+  "https://picsum.photos/640/640?random=3",
+  "https://picsum.photos/640/640?random=4",
+  "https://picsum.photos/640/640?random=5",
+  "https://picsum.photos/640/640?random=6",
+];
 </script>
 
 <template>
@@ -24,33 +33,31 @@ onMounted(() => {
   <main class="main">
     <!-- Slider section -->
     <section>
-      <div
-        v-if="appStore.loading"
-        class="w-full h-full rounded-lg skeleton__img"
-      ></div>
-      <Carousel
-        v-else
-        :items-to-show="1"
-        :wrap-around="true"
-        :autoplay="3000"
-        slide-effect="fade"
-        :transition="1000"
-        class="w-full"
-      >
-        <Slide v-for="(banner, index) in home.banners" :key="index">
-          <NuxtLink :to="banner.target_url">
+      <div v-if="home.banners" class="w-full h-full">
+        <UCarousel
+          v-slot="{ item }"
+          loop
+          fade
+          dots
+          :items="home.banners"
+          :autoplay="{ delay: 2000 }"
+          class="w-full mx-auto"
+        >
+          <NuxtLink :to="item.target_url">
             <img
-              :src="banner.image_url"
-              :alt="banner.name"
+              :src="item.image_url"
+              :alt="item.name"
               class="rounded-lg w-full object-cover z-10"
             />
           </NuxtLink>
-        </Slide>
-
-        <template #addons>
-          <Navigation />
-        </template>
-      </Carousel>
+        </UCarousel>
+      </div>
+      <!-- Loading skeleton -->
+      <div v-else role="status" class="animate-pulse space-y-4">
+        <h3 class="h-32 md:h-96 bg-gray-200 rounded w-full"></h3>
+        <p class="h-8 bg-gray-200 rounded-full"></p>
+        <p class="h-4 bg-gray-200 rounded-full"></p>
+      </div>
     </section>
 
     <!-- Features section -->

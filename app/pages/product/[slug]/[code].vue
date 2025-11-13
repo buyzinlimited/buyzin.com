@@ -6,10 +6,11 @@ import Tabs from "~/components/Tabs.vue";
 const productStore = useProductStore();
 const route = useRoute();
 const cartStore = useCartStore();
-const { product, related } = storeToRefs(productStore);
 
 const showCartDialog = ref(false);
 const selectedVariant = ref(null);
+const product = ref(null);
+const related = ref([]);
 
 const loadProduct = async () => {
   const response = await productStore.getProduct(
@@ -119,18 +120,16 @@ useSchemaOrg([
     <nav class="text-sm text-gray-600 py-4">
       <ul class="flex flex-wrap items-center space-x-1">
         <li>
-          <a
-            href="https://klbtheme.com/grogin"
-            class="text-gray-700 hover:text-primary font-medium"
-            >Home</a
+          <NuxtLink to="/" class="text-gray-700 hover:text-primary font-medium"
+            >Home</NuxtLink
           >
         </li>
         <li class="text-gray-400">/</li>
         <li>
-          <a
-            href="https://klbtheme.com/grogin/product-category/beverages/"
+          <NuxtLink
+            to="/"
             class="text-gray-700 hover:text-primary font-medium"
-            >Beverages</a
+            >{{ product?.category.name }}</NuxtLink
           >
         </li>
         <li class="text-gray-400">/</li>
@@ -147,8 +146,8 @@ useSchemaOrg([
         </div>
 
         <div class="w-full">
-          <div class="space-y-6">
-            <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900">
+          <div class="space-y-4">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-heading">
               {{ product?.name }}
             </h1>
 
@@ -208,8 +207,8 @@ useSchemaOrg([
             </div>
 
             <!-- Variants -->
-            <div v-if="product?.has_variant" class="mb-6">
-              <h3 class="font-semibold text-lg mb-3">Variants:</h3>
+            <div v-if="product?.has_variant">
+              <h3 class="font-semibold">Variants:</h3>
               <div class="flex flex-wrap gap-3">
                 <button
                   v-for="variant in product?.variants"
@@ -288,29 +287,31 @@ useSchemaOrg([
             </div>
 
             <div class="space-y-4 pt-4 border-t border-dashed">
-              <div class="flex items-start gap-3">
+              <div v-if="product?.refundable" class="flex items-start gap-3">
                 <div class="flex-none">
                   <IconsIconPayment class="size-6 text-primary" />
                 </div>
                 <div class="grow">
-                  <p class="text-base font-semibold text-gray-900">Payment.</p>
-                  <p class="text-gray-600">
-                    Payment upon receipt of goods, Payment by card in the
-                    department, Google Pay, Online card, -5% discount in case of
-                    payment
-                  </p>
+                  <h4 class="font-semibold text-gray-900">Refundable.</h4>
+                  <div v-html="product?.refundable" class="text-gray-600"></div>
                 </div>
               </div>
-              <div class="flex items-start gap-3">
+              <div v-if="product?.warranty" class="flex items-start gap-3">
                 <div class="flex-none">
                   <IconsIconWarranty class="size-6 text-primary" />
                 </div>
                 <div class="grow">
-                  <p class="text-base font-semibold text-gray-900">Warranty.</p>
-                  <p class="text-gray-600">
-                    The Consumer Protection Act does not provide for the return
-                    of this product of proper quality.
-                  </p>
+                  <h4 class="font-semibold text-gray-900">Warranty.</h4>
+                  <div v-html="product?.warranty" class="text-gray-600"></div>
+                </div>
+              </div>
+              <div v-if="product?.conditions" class="flex items-start gap-3">
+                <div class="flex-none">
+                  <IconsIconInfo class="size-6 text-primary" />
+                </div>
+                <div class="grow">
+                  <h4 class="font-semibold text-gray-900">Conditions.</h4>
+                  <div v-html="product?.conditions" class="text-gray-600"></div>
                 </div>
               </div>
             </div>
@@ -359,52 +360,28 @@ useSchemaOrg([
         ]"
       >
         <template #description>
-          <div class="text-body text-base leading-relaxed space-y-6">
-            <p>
-              Quisque varius diam vel metus mattis, id aliquam diam rhoncus.
-              Proin vitae magna in dui finibus malesuada et at nulla. Morbi elit
-              ex, viverra vitae ante vel, blandit feugiat ligula. Fusce
-              fermentum iaculis nibh, at sodales leo maximus a. Nullam ultricies
-              sodales nunc, in pellentesque lorem mattis quis. Cras imperdiet
-              est in nunc tristique lacinia. Nullam aliquam mauris eu accumsan
-              tincidunt. Suspendisse velit ex, aliquet vel ornare vel, dignissim
-              a tortor.
-            </p>
-            <p>
-              Quisque varius diam vel metus mattis, id aliquam diam rhoncus.
-              Proin vitae magna in dui finibus malesuada et at nulla. Morbi elit
-              ex, viverra vitae ante vel, blandit feugiat ligula. Fusce
-              fermentum iaculis nibh, at sodales leo maximus a. Nullam ultricies
-              sodales nunc, in pellentesque lorem mattis quis. Cras imperdiet
-              est in nunc tristique lacinia. Nullam aliquam mauris eu accumsan
-              tincidunt. Suspendisse velit ex, aliquet vel ornare vel, dignissim
-              a tortor.
-            </p>
-            <p>
-              Quisque varius diam vel metus mattis, id aliquam diam rhoncus.
-              Proin vitae magna in dui finibus malesuada et at nulla. Morbi elit
-              ex, viverra vitae ante vel, blandit feugiat ligula. Fusce
-              fermentum iaculis nibh, at sodales leo maximus a. Nullam ultricies
-              sodales nunc, in pellentesque lorem mattis quis. Cras imperdiet
-              est in nunc tristique lacinia. Nullam aliquam mauris eu accumsan
-              tincidunt. Suspendisse velit ex, aliquet vel ornare vel, dignissim
-              a tortor.
-            </p>
-          </div>
+          <div
+            v-html="product?.description"
+            class="text-body leading-relaxed space-y-6"
+          ></div>
         </template>
         <template #specifications>
-          <table class="mb-6 border w-full">
+          <table
+            v-for="section in product?.specifications"
+            :key="section.title"
+            class="mb-6 border w-full"
+          >
             <thead>
               <tr class="bg-gray-100">
-                <th class="text-left p-2" colspan="2">Display Features</th>
+                <th class="text-left p-2" colspan="2">{{ section.title }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="item in 10">
+              <tr v-for="item in section.items" :key="item.label">
                 <td class="p-2 border-t w-1/4 font-medium text-gray-600">
-                  Display Size
+                  {{ item.label }}
                 </td>
-                <td class="p-2 border-t">21.45 Inch</td>
+                <td class="p-2 border-t">{{ item.value }}</td>
               </tr>
             </tbody>
           </table>
@@ -429,27 +406,16 @@ useSchemaOrg([
         >
       </div>
 
-      <Carousel
-        :items-to-show="5"
-        :wrap-around="true"
-        :gap="10"
-        :autoplay="3000"
-        :transition="1000"
-        :snap-align="'start'"
-        :mouse-drag="true"
-        :touch-drag="true"
-        :breakpoints="{
-          480: { itemsToShow: 2, gap: 10 },
-          640: { itemsToShow: 3, gap: 10 },
-          768: { itemsToShow: 4, gap: 10 },
-          1024: { itemsToShow: 5, gap: 10 },
-          1280: { itemsToShow: 5, gap: 10 },
-        }"
+      <UCarousel
+        v-slot="{ item }"
+        loop
+        wheel-gestures
+        :items="related"
+        :ui="{ item: 'basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5' }"
+        class="gap-4"
       >
-        <Slide v-for="product in related" :key="product.id">
-          <ProductCard :product="product" />
-        </Slide>
-      </Carousel>
+        <ProductCard :product="item" />
+      </UCarousel>
     </div>
   </main>
 

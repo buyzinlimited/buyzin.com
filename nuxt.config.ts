@@ -11,11 +11,16 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    'vue3-carousel-nuxt',
     '@nuxtjs/sitemap',
-    '@nuxtjs/robots',
     'nuxt-schema-org',
+    '@nuxt/ui'
   ],
+
+  ui: {
+    theme: {
+      colors: ['primary', 'error']
+    }
+  },
 
 
   vite: {

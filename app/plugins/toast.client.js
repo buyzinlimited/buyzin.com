@@ -1,23 +1,43 @@
-import { ref } from "vue";
-
 export default defineNuxtPlugin((nuxtApp) => {
-  const toasts = ref([]);
+  const toast = useToast();
 
-  const toast = (message, type = "success", duration = 3000) => {
-    const id = Date.now();
-    toasts.value.push({ id, message, type });
+  const showToast = (message, type = "info", duration = 4000) => {
+    const config = {
+      description: message,
+      duration,
+    };
 
-    setTimeout(() => {
-      toasts.value = toasts.value.filter((t) => t.id !== id);
-    }, duration);
+    switch (type) {
+      case "success":
+        config.title = "Success";
+        config.color = "green";
+        config.icon = "i-heroicons-check-circle";
+        break;
+      case "error":
+        config.title = "Error";
+        config.color = "red";
+        config.icon = "i-heroicons-x-circle";
+        break;
+      case "warning":
+        config.title = "Warning";
+        config.color = "yellow";
+        config.icon = "i-heroicons-exclamation-triangle";
+        break;
+      default:
+        config.title = "Info";
+        config.color = "blue";
+        config.icon = "i-heroicons-information-circle";
+        break;
+    }
+
+    toast.add(config);
   };
 
   // Provide globally
-  nuxtApp.provide("toast", toast);
-  nuxtApp.provide("toasts", toasts);
+  nuxtApp.provide("toast", showToast);
 
-  // Pinia plugin: add $toast to all stores
-  nuxtApp.$pinia?.use(({ store }) => {
-    store.$toast = toast;
-  });
+  // Global window access (for stores/composables)
+  if (process.client) {
+    window.$toast = showToast;
+  }
 });
