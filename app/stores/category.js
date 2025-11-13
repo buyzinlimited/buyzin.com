@@ -1,0 +1,26 @@
+import { defineStore } from "pinia";
+import apiClient from "~/utils/axios";
+
+export const useCategoryStore = defineStore("category", {
+  state: () => ({
+    loading: false,
+    errors: {},
+  }),
+
+  getters: {},
+
+  actions: {
+    async getCategories() {
+      try {
+        const response = await apiClient.get("/api/categories");
+        if (response.status === 200) {
+          return Promise.resolve(response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          return Promise.reject(error.response.data);
+        }
+      }
+    },
+  },
+});
