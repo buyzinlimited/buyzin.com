@@ -56,56 +56,54 @@ onMounted(() => {
   loadProduct();
 });
 
-useSchemaOrg([
-  defineProduct({
-    name: "Premium Ergonomic Office Chair",
-    description:
-      "High-quality office chair with lumbar support and adjustable height.",
-    image: [
-      "https://example.com/images/chair-front.jpg",
-      "https://example.com/images/chair-side.jpg",
-      "https://example.com/images/chair-back.jpg",
-    ],
-    sku: "CHAIR-123",
-    mpn: "ERGO-2023-BLK",
-    gtin13: "9780123456789",
-    brand: {
-      name: "ErgoComfort",
-    },
-    offers: {
-      price: 299.99,
-      priceCurrency: "USD",
-      priceValidUntil: "2023-12-31",
-      url: "https://example.com/chair-ergonomic",
-      availability: "https://schema.org/InStock",
-      itemCondition: "https://schema.org/NewCondition",
-    },
-    aggregateRating: {
-      ratingValue: 4.7,
-      reviewCount: 89,
-    },
-    review: [
-      {
-        author: "Jane Doe",
-        datePublished: "2023-01-15",
-        reviewBody:
-          "This chair has dramatically improved my posture and comfort throughout the workday.",
-        reviewRating: {
-          ratingValue: 5,
+watch(
+  product,
+  (data) => {
+    if (!data?.name) return;
+
+    useSchemaOrg([
+      defineProduct({
+        name: data.name,
+        description: data.description,
+        image: data.images || [],
+        sku: data.sku,
+        mpn: data.mpn || "",
+        gtin13: data.gtin13 || "",
+        brand: {
+          name: data.brand?.name || "",
         },
-      },
-      {
-        author: "John Smith",
-        datePublished: "2023-02-20",
-        reviewBody:
-          "Excellent build quality, but took some time to adjust properly.",
-        reviewRating: {
-          ratingValue: 4,
+        offers: {
+          price: data.price,
+          priceCurrency: data.currency || "USD",
+          priceValidUntil: data.price_valid_until || "",
+          url: window.location.href,
+          availability: data.in_stock
+            ? "https://schema.org/InStock"
+            : "https://schema.org/OutOfStock",
+          itemCondition: "https://schema.org/NewCondition",
         },
-      },
-    ],
-  }),
-]);
+        aggregateRating: data.reviews
+          ? {
+              ratingValue: data.average_rating,
+              reviewCount: data.reviews.length,
+            }
+          : undefined,
+        review: data.reviews
+          ? data.reviews.map((r) => ({
+              author: r.user?.name || "Anonymous",
+              datePublished:
+                r.created_at?.timestamp || new Date().toISOString(),
+              reviewBody: r.review,
+              reviewRating: {
+                ratingValue: r.rating,
+              },
+            }))
+          : [],
+      }),
+    ]);
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
