@@ -80,7 +80,7 @@ onMounted(() => {
                   <span
                     v-if="review.is_verified_purchase"
                     class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full font-medium"
-                    >Verified Purchase</span
+                    >Verified</span
                   >
                 </div>
                 <span class="text-gray-400 text-sm">{{
@@ -118,52 +118,26 @@ onMounted(() => {
               :key="idx"
               :src="img"
               alt="Review Image"
-              class="h-16 w-16 object-cover rounded-lg shrink-0 border border-gray-200"
+              class="h-16 w-16 object-cover rounded-lg shrink-0 border border-gray-200 p-1"
             />
           </div>
 
           <!-- Helpful / Not Helpful -->
           <div class="flex gap-4 mt-4 text-gray-500 text-sm">
-            <button
-              class="flex items-center gap-1 hover:text-primary transition"
-            >
-              👍 {{ review.helpful_count }}
-            </button>
-            <button
-              class="flex items-center gap-1 hover:text-primary transition"
-            >
-              👎 {{ review.not_helpful_count }}
-            </button>
+            <UButton icon="i-lucide-thumbs-up" color="cyan" variant="subtle">
+              <span class="hover:text-primary transition">{{
+                review.helpful_count
+              }}</span>
+            </UButton>
+
+            <UButton icon="i-lucide-thumbs-down" color="cyan" variant="subtle">
+              <span class="hover:text-primary transition">{{
+                review.not_helpful_count
+              }}</span>
+            </UButton>
           </div>
         </div>
       </template>
-    </div>
-
-    <!-- Leave a Review Form -->
-    <div class="mt-10">
-      <h3 class="text-xl font-bold mb-4">Leave a Review</h3>
-      <form class="space-y-6 p-4 bg-white rounded shadow max-w-2xl">
-        <div class="form__group">
-          <label class="block text-lg font-semibold mb-2">Overall Rating</label>
-          <div class="flex space-x-4">
-            <label
-              v-for="n in 5"
-              :key="'overall-' + n"
-              class="inline-flex items-center space-x-1"
-            >
-              <input type="radio" :value="n" class="accent-primary" />
-              <span>{{ n }}</span>
-            </label>
-          </div>
-        </div>
-
-        <div class="form__group">
-          <label class="form__label">Comment</label>
-          <textarea class="form__control" rows="4"></textarea>
-        </div>
-
-        <BaseButton>Submit Review</BaseButton>
-      </form>
     </div>
   </div>
 </template>

@@ -4,6 +4,8 @@ import { useCartStore } from "@/stores/cart";
 import Tabs from "~/components/Tabs.vue";
 
 const productStore = useProductStore();
+const wishlistStore = useWishlistStore();
+const authStore = useAuthStore();
 const route = useRoute();
 const cartStore = useCartStore();
 
@@ -104,14 +106,27 @@ watch(
   },
   { immediate: true }
 );
+
+const config = useRuntimeConfig();
+
+const addToWishlist = async (product) => {
+  if (authStore.token) {
+    await wishlistStore.addItem(product);
+  } else {
+    setTimeout(() => {
+      navigateTo("/auth/login");
+    }, 2000);
+    toast.info("Please login to add to wishlist");
+  }
+};
 </script>
 
 <template>
   <SeoMeta
-    title="Buyzin | Shop Smart. Live Easy. | Best Deals on Fashion, Gadgets & Lifestyle in Bangladesh"
-    description="Shop online with Buyzin for 100% authentic products, fast delivery & easy returns across Bangladesh. Find the best deals on fashion, electronics, home goods & more. Shop Smart. Live Easy."
-    keywords="ecommerce, online shopping, buy online, fashion, gadgets, electronics, Bangladesh, best price, quick delivery, Buyzin"
-    image=""
+    :title="product?.meta_title"
+    :description="product?.meta_description"
+    :keywords="product?.meta_keywords"
+    :image="product?.image_url"
   />
 
   <main class="max-w-7xl mx-auto px-4 py-4">
@@ -149,36 +164,51 @@ watch(
               {{ product?.name }}
             </h1>
 
-            <div
-              class="flex flex-wrap items-center gap-4 text-sm text-gray-600 border-b pb-4"
-            >
-              <div class="flex items-center space-x-2">
-                <div class="text-yellow-500 flex items-center">
-                  <template v-for="i in 5" :key="i">
-                    <IconsIconStarFill
-                      v-if="i <= Math.floor(product?.rating)"
-                      class="icon__star filled"
-                    />
-                    <IconsIconStar v-else class="icon__star" />
-                  </template>
+            <div class="flex flex-wrap items-center justify-between">
+              <div class="grow flex items-center gap-4">
+                <div class="flex items-center space-x-2">
+                  <div class="text-yellow-500 flex items-center">
+                    <template v-for="i in 5" :key="i">
+                      <IconsIconStarFill
+                        v-if="i <= Math.floor(product?.rating)"
+                        class="icon__star filled"
+                      />
+                      <IconsIconStar v-else class="icon__star" />
+                    </template>
+                  </div>
+                  <span class="font-bold text-gray-800">{{
+                    product?.rating
+                  }}</span>
+                  <span class="text-xs"
+                    >({{ product?.review_count }} ratings)</span
+                  >
                 </div>
-                <span class="font-bold text-gray-800">{{
-                  product?.rating
-                }}</span>
-                <span class="text-xs"
-                  >({{ product?.review_count }} ratings)</span
-                >
+                <div class="space-x-2">
+                  <span class="font-medium">SKU:</span>
+                  <span class="ml-1 font-mono">{{ product?.sku }}</span>
+                </div>
+                <div class="space-x-2">
+                  <span class="font-medium">Sold by:</span>
+                  <NuxtLink to="/" class="text-primary">{{
+                    product?.store?.name
+                  }}</NuxtLink>
+                </div>
               </div>
 
-              <div class="space-x-2">
-                <span class="font-medium">SKU:</span>
-                <span class="ml-1 font-mono">{{ product?.sku }}</span>
-              </div>
-              <div class="space-x-2">
-                <span class="font-medium">Sold by:</span>
-                <NuxtLink to="/" class="text-primary">{{
-                  product?.store?.name
-                }}</NuxtLink>
+              <div class="flex-none">
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    @click="addToWishlist(product)"
+                    class="text-body hover:text-primary transition duration-300"
+                  >
+                    <IconsIconHeart class="size-5" />
+                  </button>
+                  <SocialShare
+                    :text="product?.name"
+                    :url="`${config.public.baseUrl}/product/${product?.slug}/${product?.sku}`"
+                  />
+                </div>
               </div>
             </div>
 
@@ -238,50 +268,12 @@ watch(
             </div>
 
             <div class="flex items-center gap-4">
-              <div
-                class="flex-none items-center border border-border rounded overflow-hidden"
+              <BaseButton
+                class="w-full"
+                @click="addToCart(product)"
+                :loading="cartStore.loading"
+                >Add to cart</BaseButton
               >
-                <button
-                  type="button"
-                  class="px-3 py-2 text-red-500"
-                  @click="decrease"
-                >
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fill-rule="evenodd"
-                      d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
-                <input
-                  value="1"
-                  type="number"
-                  min="1"
-                  max="48"
-                  class="w-auto text-center focus:outline-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                />
-                <button type="button" class="px-3 py-2 text-green-500">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                      fill-rule="evenodd"
-                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-
-              <div class="w-full flex items-center gap-4">
-                <BaseButton
-                  @click="addToCart(product)"
-                  :loading="cartStore.loading"
-                  >Add to cart</BaseButton
-                >
-                <button type="button" class="base__secondary w-full">
-                  Buy Now
-                </button>
-              </div>
             </div>
 
             <div class="space-y-4 pt-4 border-t border-dashed">
@@ -312,37 +304,6 @@ watch(
                   <div v-html="product?.conditions" class="text-gray-600"></div>
                 </div>
               </div>
-            </div>
-
-            <div class="flex flex-wrap gap-4 pt-4 border-t">
-              <button
-                type="button"
-                class="text-primary hover:text-primary/70 flex items-center"
-              >
-                <IconsIconHeart class="size-6 mr-2" />
-                Add to wishlist
-              </button>
-              <a
-                href="#"
-                class="text-primary hover:text-primary/70 flex items-center"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6 mr-2"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M7.217 10.907a2.25 2.25 0 1 0 0 2.186m0-2.186c.18.324.283.696.283 1.093s-.103.77-.283 1.093m0-2.186 9.566-5.314m-9.566 7.5 9.566 5.314m0 0a2.25 2.25 0 1 0 3.935 2.186 2.25 2.25 0 0 0-3.935-2.186Zm0-12.814a2.25 2.25 0 1 0 3.933-2.185 2.25 2.25 0 0 0-3.933 2.185Z"
-                  />
-                </svg>
-
-                Share this Product
-              </a>
             </div>
           </div>
         </div>

@@ -109,7 +109,7 @@ const user = ref({
         </div>
 
         <!-- content -->
-        <div class="lg:col-span-2 bg-white rounded-2xl p-6">
+        <div class="lg:col-span-2 bg-white rounded-2xl">
           <slot />
         </div>
       </div>

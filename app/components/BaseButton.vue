@@ -16,7 +16,7 @@ const props = defineProps({
     :disabled="loading"
     :type="type"
     :class="[loading ? 'cursor-not-allowed' : 'cursor-allowed']"
-    class="w-full flex items-center justify-center px-4 py-2.5 rounded text-gray-100 bg-primary hover:opacity-90 focus:outline-none focus:ring-0"
+    class="inline-flex items-center justify-center px-4 py-2.5 rounded text-gray-100 bg-primary hover:opacity-90 focus:outline-none focus:ring-0"
   >
     <template v-if="loading">
       <svg

@@ -7,6 +7,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  runtimeConfig: {
+    public: {
+      baseUrl: 'https://www.buyzin.com'
+    }
+  },
+
   modules: [
     '@nuxt/image',
     '@pinia/nuxt',
@@ -41,7 +47,7 @@ export default defineNuxtConfig({
         lang: 'en',
       },
       bodyAttrs: {
-        class: 'antialiased min-h-screen text-sm font-body text-body bg-gray-100',
+        class: 'antialiased min-h-screen text-sm font-body text-body bg-gray-50',
       },
     },
   },

@@ -1,43 +1,49 @@
 export default defineNuxtPlugin((nuxtApp) => {
   const toast = useToast();
 
-  const showToast = (message, type = "info", duration = 4000) => {
-    const config = {
-      description: message,
-      duration,
+  // Inject globally as globalThis.toast
+  if (!globalThis.toast) {
+    globalThis.toast = {
+      success(message, duration = 4000) {
+        toast.add({
+          title: "Success",
+          description: message,
+          color: "primary",
+          variant: "outline",
+          icon: "i-lucide-check-circle",
+          duration,
+        });
+      },
+      error(message, duration = 4000) {
+        toast.add({
+          title: "Error",
+          description: message,
+          color: "red",
+          variant: "outline",
+          icon: "i-lucide-x-circle",
+          duration,
+        });
+      },
+      warning(message, duration = 4000) {
+        toast.add({
+          title: "Warning",
+          description: message,
+          color: "yellow",
+          variant: "outline",
+          icon: "i-lucide-alert-triangle",
+          duration,
+        });
+      },
+      info(message, duration = 4000) {
+        toast.add({
+          title: "Info",
+          description: message,
+          color: "blue",
+          variant: "outline",
+          icon: "i-lucide-info",
+          duration,
+        });
+      },
     };
-
-    switch (type) {
-      case "success":
-        config.title = "Success";
-        config.color = "green";
-        config.icon = "i-heroicons-check-circle";
-        break;
-      case "error":
-        config.title = "Error";
-        config.color = "red";
-        config.icon = "i-heroicons-x-circle";
-        break;
-      case "warning":
-        config.title = "Warning";
-        config.color = "yellow";
-        config.icon = "i-heroicons-exclamation-triangle";
-        break;
-      default:
-        config.title = "Info";
-        config.color = "blue";
-        config.icon = "i-heroicons-information-circle";
-        break;
-    }
-
-    toast.add(config);
-  };
-
-  // Provide globally
-  nuxtApp.provide("toast", showToast);
-
-  // Global window access (for stores/composables)
-  if (process.client) {
-    window.$toast = showToast;
   }
 });

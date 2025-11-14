@@ -1,7 +1,8 @@
 @import url("../fonts/line-awesome/css/line-awesome.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
-@import "@nuxt/ui";
+
 @import "tailwindcss";
+@import "@nuxt/ui";
 
 @theme {
   --color-background: #a2f4fd;

@@ -13,21 +13,19 @@ export const useWishlistStore = defineStore("wishlist", {
   actions: {
     async addItem(product) {
       this.loading = product.id;
-      const toast = useToast();
+
       try {
         const response = await apiClient.post("/api/wishlist", {
           product_id: product.id,
         });
-
-        if (response.status === 200) {
-          this.loading = false;
-          toast.success(response.data.message, "success");
+        if (response.status === 201) {
+          toast.success("Added to wishlist!");
           await this.getWishlist();
-          return Promise.resolve(response);
         }
       } catch (error) {
-        toast.showToast(error.response.data.message, "warning");
-        return Promise.reject(error.response);
+        if (error.response) {
+          toast.error("Something went wrong!");
+        }
       } finally {
         this.loading = false;
       }

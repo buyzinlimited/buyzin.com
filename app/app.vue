@@ -124,6 +124,7 @@ useSchemaOrg([
     sameAs: [
       "https://www.facebook.com/BuyzinLimited",
       "https://www.youtube.com/@BuyzinLimited",
+      "https://x.com/BuyzinLimited",
     ],
 
     // Rating
@@ -227,6 +228,8 @@ useSchemaOrg([
 
 <template>
   <NuxtLayout>
-    <NuxtPage />
+    <UApp>
+      <NuxtPage />
+    </UApp>
   </NuxtLayout>
 </template>

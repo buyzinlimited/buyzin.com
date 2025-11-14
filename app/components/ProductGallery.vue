@@ -24,12 +24,23 @@ watch(
 const setMainImage = (img) => {
   mainImage.value = img;
 };
+
+const hasVideo = computed(() => !!props.product?.video_url);
+
+// Convert video_url to embed URL
+const getEmbedUrl = (url) => {
+  if (!url) return "";
+  const videoId = url.split("v=")[1]?.split("&")[0];
+  return `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+};
 </script>
 
 <template>
-  <div class="relative">
+  <div class="block">
     <!-- Main Image -->
-    <div class="w-full aspect-square overflow-hidden bg-gray-100 rounded-lg">
+    <div
+      class="relative w-full aspect-square overflow-hidden bg-gray-100 rounded-lg"
+    >
       <NuxtImg
         v-if="mainImage"
         :src="mainImage"
@@ -38,10 +49,27 @@ const setMainImage = (img) => {
         class="w-full h-full object-cover transition-all duration-300"
       />
       <div
-        v-else
-        class="w-full h-full flex items-center justify-center text-gray-400"
+        v-if="hasVideo"
+        class="absolute inset-0 flex items-center justify-center cursor-pointer"
       >
-        Loading image...
+        <div class="bg-black/50 rounded-full p-4 hover:bg-black/60 transition">
+          <UModal>
+            <UIcon name="i-lucide-play" class="size-10 text-white" />
+            <template #content>
+              <div
+                class="relative w-full max-w-3xl aspect-video bg-black rounded-lg"
+              >
+                <iframe
+                  :src="getEmbedUrl(product.video_url)"
+                  class="w-full h-full"
+                  frameborder="0"
+                  allow="autoplay; encrypted-media"
+                  allowfullscreen
+                ></iframe>
+              </div>
+            </template>
+          </UModal>
+        </div>
       </div>
     </div>
 
@@ -52,10 +80,10 @@ const setMainImage = (img) => {
           v-for="(gallery, index) in product.gallery"
           :key="index"
           @click="setMainImage(gallery)"
-          class="w-28 h-28 border-2 rounded overflow-hidden cursor-pointer transition-all duration-200"
+          class="size-28 border-2 rounded overflow-hidden cursor-pointer transition-all duration-200"
           :class="{
             'border-primary': mainImage === gallery,
-            'border-border': mainImage !== gallery,
+            'border-gray-200': mainImage !== gallery,
           }"
         >
           <img
