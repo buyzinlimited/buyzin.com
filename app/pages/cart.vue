@@ -27,7 +27,7 @@ useSchemaOrg([
     description="View and manage the items in your Buyzin shopping cart. Review product details, update quantities, and proceed to secure checkout with fast delivery across Bangladesh."
     keywords="shopping cart, checkout, buy online, ecommerce, Buyzin, Bangladesh, cart items, secure payment, online shopping, fast delivery"
   />
-  <div class="container mx-auto py-6">
+  <main class="container mx-auto px-4 py-4">
     <div class="flex flex-wrap justify-between w-full gap-6">
       <!-- Left side -->
       <div class="bg-white rounded-xl grow p-4">
@@ -147,7 +147,7 @@ useSchemaOrg([
       </div>
 
       <!-- Right side (Summary) -->
-      <div class="flex-none w-full max-w-sm">
+      <div class="flex-none">
         <div class="card">
           <div class="card__header">
             <h3 class="card__title">Cart Summary</h3>
@@ -215,7 +215,7 @@ useSchemaOrg([
                     to="/shop"
                     class="font-medium text-primary hover:opacity-90"
                   >
-                    Continue Shopping &rarr;
+                    Continue Shopping
                   </NuxtLink>
                 </p>
               </div>
@@ -231,5 +231,5 @@ useSchemaOrg([
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>

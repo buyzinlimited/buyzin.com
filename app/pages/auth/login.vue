@@ -43,23 +43,18 @@ const login = async () => {
           </p>
 
           <form @submit.prevent="login" class="space-y-4 md:space-y-6 mt-4">
-            <!-- Phone Number -->
-            <div class="mb-3">
-              <BaseInput
-                v-model.trim="form.phone"
-                label="Phone Number"
-                placeholder="Enter Phone number"
-              />
-            </div>
-            <!-- Password -->
-            <div class="mb-3">
-              <BaseInput
-                type="password"
-                v-model.trim="form.password"
-                label="Enter Password"
-                placeholder="Enter Password"
-              />
-            </div>
+            <BaseInput
+              v-model.trim="form.phone"
+              label="Phone Number"
+              placeholder="Enter Phone number"
+            />
+
+            <BaseInput
+              type="password"
+              v-model.trim="form.password"
+              label="Enter Password"
+              placeholder="Enter Password"
+            />
 
             <!-- Remember & Forgot -->
             <div class="flex items-center justify-between">
@@ -79,17 +74,15 @@ const login = async () => {
               </div>
               <NuxtLink
                 to="/auth/forgot"
-                class="text-sm font-medium text-primary-600 hover:underline"
+                class="text-sm font-medium text-primary hover:underline"
                 >Forgot password?</NuxtLink
               >
             </div>
 
-            <!-- Login Button -->
             <BaseButton class="w-full" :loading="authStore.loading">
               Log in
             </BaseButton>
 
-            <!-- Register Link -->
             <p class="text-sm font-light text-center">
               Don’t have an account yet?
               <NuxtLink

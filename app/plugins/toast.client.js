@@ -18,7 +18,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         toast.add({
           title: "Error",
           description: message,
-          color: "red",
+          color: "neutral",
           variant: "outline",
           icon: "i-lucide-x-circle",
           duration,
@@ -28,7 +28,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         toast.add({
           title: "Warning",
           description: message,
-          color: "yellow",
+          color: "neutral",
           variant: "outline",
           icon: "i-lucide-alert-triangle",
           duration,
@@ -38,7 +38,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         toast.add({
           title: "Info",
           description: message,
-          color: "blue",
+          color: "neutral",
           variant: "outline",
           icon: "i-lucide-info",
           duration,

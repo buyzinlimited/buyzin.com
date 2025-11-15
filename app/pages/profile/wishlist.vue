@@ -2,10 +2,18 @@
 import ProfileLayout from "./ProfileLayout.vue";
 
 const wishlistStore = useWishlistStore();
-const { count, items } = storeToRefs(wishlistStore);
+const items = ref(null);
 
 const loadWishlist = async () => {
-  await wishlistStore.getWishlist();
+  const response = await wishlistStore.getWishlist();
+  console.log(response.data);
+  items.value = response.data;
+};
+
+const removeWishlist = async (product) => {
+  if (confirm("Are you sure you went to remove form wishlist?")) {
+    await wishlistStore.remove(product);
+  }
 };
 
 onMounted(() => {
@@ -22,60 +30,67 @@ onMounted(() => {
     />
     <div class="card">
       <div class="card__header">
-        <h3 class="card__title">Wishlist {{ count }}</h3>
+        <h3 class="card__title">Wishlist</h3>
       </div>
       <div class="card__body">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <article class="relative group border border-border">
-            <button
-              class="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition"
+        <template v-if="items?.data">
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <article
+              v-for="item in items?.data"
+              :key="item.id"
+              class="relative group border border-border"
             >
-              <IconsIconClose class="size-5" />
-            </button>
+              <button
+                @click="removeWishlist(item.product)"
+                class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 transition"
+              >
+                <IconsIconClose class="size-4" />
+              </button>
 
-            <NuxtImg
-              src="/products/1.jpg"
-              alt="Shop Item2"
-              loading="lazy"
-              class="w-full h-48 object-cover rounded-lg"
-            />
+              <NuxtImg
+                :src="item.product?.image_url"
+                :alt="item.product?.name"
+                loading="lazy"
+                class="w-full object-cover rounded-lg"
+              />
 
-            <div class="space-y-2 p-4">
-              <div class="text-sm text-gray-500">Asus</div>
-
-              <div class="text-base font-semibold text-gray-900">
-                <a href="#" class="hover:text-primary transition">
-                  ASUS TUF Dash 15 15.6&quot; Gaming Laptop - Grey (Intel Core
-                  i7-11370H/512GB SSD/16GB RAM/RTX 3060/Win11)
-                </a>
-              </div>
-
-              <!-- Review -->
-              <div class="flex items-center space-x-2">
-                <ul class="flex space-x-1">
-                  <li><i class="fas fa-star text-yellow-400"></i></li>
-                  <li><i class="fas fa-star text-yellow-400"></i></li>
-                  <li><i class="fas fa-star text-yellow-400"></i></li>
-                  <li><i class="fas fa-star text-yellow-400"></i></li>
-                  <li><i class="fas fa-star text-yellow-400"></i></li>
-                </ul>
-                <div class="text-sm text-gray-500">
-                  <a href="#" class="hover:underline">3,014 reviews</a>
-                </div>
-              </div>
-
-              <!-- Footer / Price -->
-              <div class="flex items-center justify-between mt-2">
-                <div class="text-lg font-semibold text-gray-900">
-                  $399.00
-                  <span class="text-sm text-gray-400 line-through ml-1"
-                    >$450</span
+              <div class="space-y-2 p-4">
+                <h3 class="text-base font-semibold text-body">
+                  <NuxtLink
+                    :to="`/product/${item.product?.slug}/${item.product?.sku}`"
+                    :title="item.product?.name"
+                    target="_blank"
+                    class="hover:text-primary transition"
                   >
+                    {{ item.product?.name }}
+                  </NuxtLink>
+                </h3>
+                <div class="flex items-center justify-between mt-2">
+                  <div v-if="item.product?.price" class="space-x-2">
+                    <del class="text-body font-body line-through">
+                      {{ item.product?.base_price_formatted }}
+                    </del>
+                    <span
+                      class="text-primary font-body font-semibold text-base"
+                      >{{ item.product?.price_formatted }}</span
+                    >
+                  </div>
+                  <div v-else>
+                    <span class="text-body">{{
+                      item.product?.base_price_formatted
+                    }}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </article>
-        </div>
+            </article>
+          </div>
+        </template>
+        <template v-else>
+          <UEmpty
+            title="Your wishlist is empty"
+            description="Looks like you haven't added anything yet. Start exploring and save your favorite products!"
+          />
+        </template>
       </div>
     </div>
   </ProfileLayout>

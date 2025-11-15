@@ -16,10 +16,10 @@ export const useCheckoutStore = defineStore("checkout", {
         const response = await apiClient.post("/api/checkout/process", payload);
         if (response.status === 200) {
           console.log(response);
-          this.$toast(response.data.message, "success");
-          if (response.data.redirect_url) {
+          toast.success(response.data.message);
+          setTimeout(() => {
             window.location.href = response.data.redirect_url;
-          }
+          }, 3000);
         }
       } catch (error) {
         if (error.response) {

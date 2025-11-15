@@ -1,4 +1,6 @@
 <script setup>
+import { main } from "#build/ui";
+
 useHead({
   title: "About Us | Buyzin",
   meta: [
@@ -18,7 +20,7 @@ useHead({
     keywords="Buyzin About Us, online shopping Bangladesh, ecommerce platform Bangladesh, trusted online store, genuine products, fast delivery, Buyzin mission vision"
   />
 
-  <div class="py-8">
+  <main class="max-w-7xl mx-auto px-4 py-4">
     <!-- Hero Section -->
     <section
       class="bg-gradient-to-br from-blue-50 to-blue-100 py-16 text-center"
@@ -171,5 +173,5 @@ useHead({
         Start Shopping →
       </NuxtLink>
     </section>
-  </div>
+  </main>
 </template>

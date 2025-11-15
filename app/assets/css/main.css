@@ -13,11 +13,6 @@
   --color-heading: #13163f;
   --color-body: #132348;
 
-  --color-success: #0e9a5f;
-  --color-warning: #fdae1c;
-  --color-danger: #ff4040;
-  --color-info: #1c8bef;
-
   --font-heading: "Montserrat", sans-serif;
   --font-body: "Montserrat", sans-serif;
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
@@ -70,8 +65,12 @@
     background-color: rgba(0, 211, 243, 0.9);
   }
 
-  .main {
-    @apply max-w-7xl mx-auto px-4 py-4;
+  .base__button {
+    @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-primary rounded hover:bg-primary focus:outline-none transition whitespace-nowrap disabled:opacity-50;
+  }
+
+  .base__outline {
+    @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-primary rounded hover:bg-primary focus:outline-none transition whitespace-nowrap disabled:opacity-50;
   }
 
   .nav {
@@ -114,60 +113,11 @@
     color: var(--color-primary);
   }
 
-  .form__group {
-    @apply relative block mb-2;
-  }
-
-  .suffix__icon i {
-    @apply absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none;
-  }
-
-  .prefix__icon i {
-    @apply absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 pointer-events-none;
-  }
-
-  .prefix__icon .form__control {
-    @apply pl-10;
-  }
-
-  .suffix__icon .form__control {
-    @apply pr-10;
-  }
-
-  .form__label {
-    @apply block mb-2 capitalize;
-  }
-
-  .form__control {
-    @apply w-full px-4 py-2 rounded border focus:border-primary focus:outline-none focus:outline-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none;
-  }
-
-  .label__checkbox {
-    @apply has-checked:bg-indigo-50 has-checked:text-indigo-900 has-checked:ring-indigo-200;
-  }
-
-  .radio__input {
-    @apply checked:border-indigo-500;
-  }
-
-  .form__select {
-    @apply block px-4 py-1.5 border border-gray-300 rounded bg-white text-sm text-gray-700 focus:outline-none focus:ring-0 focus:border-primary transition;
-  }
-
-  .base__button {
-    @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-primary rounded hover:bg-primary focus:outline-none transition whitespace-nowrap disabled:opacity-50;
-  }
-
-  .base__outline {
-    @apply bg-white border text-primary py-2 px-4 rounded;
-  }
-
   .card {
     @apply bg-white rounded-xl;
   }
-
   .card__header {
-    @apply px-4 py-3 border-b border-gray-200 flex items-center justify-between;
+    @apply px-4 py-3 border-b border-border flex items-center justify-between;
   }
 
   .card__title {
@@ -249,128 +199,5 @@
 
   .link__exact__active {
     @apply text-primary border-l-3 border-primary pl-2 bg-gray-100;
-  }
-
-  .product__card {
-    @apply bg-white border border-border rounded-lg overflow-hidden relative;
-  }
-
-  .product__badge {
-    @apply flex items-center justify-between p-2 absolute z-20;
-  }
-
-  .product__promo__badge {
-    @apply text-xs font-semibold px-2 py-1 rounded-l rounded-r-full bg-red-100 text-red-600;
-  }
-
-  .product__card__img {
-    @apply w-full h-full p-4 object-contain transition-transform duration-300 ease-in-out;
-  }
-
-  .product__info {
-    @apply px-2.5 py-2;
-  }
-
-  .product__title {
-    @apply text-base line-clamp-2 font-semibold hover:text-primary transition duration-150;
-  }
-
-  .product__meta {
-    @apply flex items-center justify-between py-2;
-  }
-
-  .product__price {
-    @apply flex items-center gap-2;
-  }
-
-  .base__price {
-    @apply text-primary font-body font-semibold text-base;
-  }
-
-  .wishlist__action {
-    @apply hover:text-primary transition duration-150;
-  }
-
-  .cart__action {
-    @apply bg-primary text-white text-sm p-1.5 rounded hover:opacity-80 transition duration-150;
-  }
-
-  .product__review {
-    @apply flex items-center gap-1;
-  }
-
-  .product__rating {
-    @apply flex items-center gap-0.5;
-  }
-
-  .skeleton {
-    @apply bg-gray-200 animate-pulse rounded-md;
-  }
-
-  .skeleton__text {
-    @apply bg-gray-200 animate-pulse h-4 rounded w-3/4 mb-2;
-  }
-
-  .skeleton__img {
-    @apply bg-gray-200 animate-pulse rounded-lg w-full h-48;
-  }
-
-  .icon__star {
-    width: 1rem;
-    height: 1rem;
-    color: #9ca3af;
-  }
-
-  .icon__star.filled {
-    color: #fbbf24;
-  }
-
-  .product__review__count {
-    font-size: 0.875rem;
-    color: #6b7280;
-  }
-
-  .shine__img__wrapper {
-    @apply relative overflow-hidden block;
-  }
-
-  .shine__img {
-    @apply w-full h-full object-cover transition-transform duration-400 ease-in-out block;
-  }
-
-  .shine__img__wrapper:hover .shine__img {
-    @apply scale-105;
-  }
-
-  /* Shine effect pseudo-element */
-  .shine__img__wrapper::before {
-    content: "";
-    @apply absolute top-0 h-full;
-    left: -75%;
-    width: 50%;
-    background: linear-gradient(
-      120deg,
-      rgba(255, 255, 255, 0) 0%,
-      rgba(255, 255, 255, 0.4) 50%,
-      rgba(255, 255, 255, 0) 100%
-    );
-    transform: skewX(-25deg);
-    z-index: 10;
-    pointer-events: none;
-  }
-
-  /* Animate on hover */
-  .shine__img__wrapper:hover::before {
-    animation: shine 1s ease-in-out;
-  }
-
-  @keyframes shine {
-    0% {
-      left: -75%;
-    }
-
-    100% {
-      left: 125%;
-    }
   }
 }

@@ -1,12 +1,12 @@
 <script setup>
 const props = defineProps({
   label: { type: String, default: "" },
-  modelValue: [String, Number, Date],
-  type: { type: String, default: "text" }, // text, date, select
+  modelValue: [String, Number],
   required: { type: Boolean, default: false },
   placeholder: { type: String, default: "" },
   error: { type: String, default: "" },
   disabled: { type: Boolean, default: false },
+  rows: { type: Number, default: 4 }, // default textarea height
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -22,15 +22,15 @@ const updateValue = (e) => {
       {{ label }} <span v-if="required" class="text-red-500">*</span>
     </label>
 
-    <input
-      :type="type"
+    <textarea
+      :rows="rows"
       :placeholder="placeholder"
       :value="modelValue"
       :disabled="disabled"
       @input="updateValue"
       class="w-full px-4 py-2 rounded border focus:border-primary focus:outline-none focus:outline-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500"
-    />
+    ></textarea>
 
-    <small v-if="error" class="text-danger-500">{{ error[0] }}</small>
+    <small v-if="error" class="text-red-500">{{ error[0] }}</small>
   </div>
 </template>

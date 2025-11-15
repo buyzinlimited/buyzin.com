@@ -171,9 +171,9 @@ const addToWishlist = async (product) => {
                     <template v-for="i in 5" :key="i">
                       <IconsIconStarFill
                         v-if="i <= Math.floor(product?.rating)"
-                        class="icon__star filled"
+                        class="size-5"
                       />
-                      <IconsIconStar v-else class="icon__star" />
+                      <IconsIconStar v-else class="size-5" />
                     </template>
                   </div>
                   <span class="font-bold text-gray-800">{{

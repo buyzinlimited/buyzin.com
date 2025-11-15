@@ -30,7 +30,7 @@ const items = [
     description="Shop online with Buyzin for 100% authentic products, fast delivery & easy returns across Bangladesh. Find the best deals on fashion, electronics, home goods & more. Shop Smart. Live Easy."
     keywords="ecommerce, online shopping, buy online, fashion, gadgets, electronics, Bangladesh, best price, quick delivery, Buyzin"
   />
-  <main class="main">
+  <main class="max-w-7xl mx-auto px-4 py-4">
     <!-- Slider section -->
     <section>
       <div v-if="home.banners" class="w-full h-full">

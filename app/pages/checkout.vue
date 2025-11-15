@@ -78,97 +78,85 @@ const submit = async () => {
     keywords="checkout, secure payment, online shopping, ecommerce, Buyzin, Bangladesh, fast delivery, order review, complete purchase"
   />
 
-  <main class="max-w-7xl mx-auto py-4">
-    <div class="flex flex-wrap items-start gap-4">
+  <main class="container mx-auto px-4 py-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Shipping Info -->
-      <div class="card grow">
+      <div class="card md:col-span-2">
         <div class="card__header">
           <h3 class="card__title">Shipping Address</h3>
         </div>
 
         <div class="card__body space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="form__group">
-              <label class="form__label">Full Name</label>
-              <input
-                type="text"
-                v-model="form.address.name"
-                class="form__control"
-                placeholder="Enter full name"
-              />
-            </div>
-            <div class="form__group">
-              <label class="form__label">Phone Number</label>
-              <input
-                type="text"
-                v-model="form.address.phone"
-                class="form__control"
-                placeholder="Enter phone number"
-              />
-            </div>
-          </div>
+            <BaseInput
+              label="Full Name"
+              v-model="form.address.name"
+              placeholder="Enter full name"
+              :required="true"
+              error=""
+            />
 
-          <div class="form__group">
-            <label class="form__label">Address</label>
-            <input
-              type="text"
-              v-model="form.address.address"
-              class="form__control"
-              placeholder="Street address"
+            <BaseInput
+              label="Phone Number"
+              v-model="form.address.phone"
+              placeholder="Enter Phone Number"
+              :required="true"
+              error=""
             />
           </div>
 
+          <BaseInput
+            label="Address"
+            v-model="form.address.address"
+            placeholder="Enter Address"
+            :required="true"
+            error=""
+          />
+
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="form__group">
-              <label class="form__label">City</label>
-              <input
-                type="text"
-                v-model="form.address.city"
-                class="form__control"
-                placeholder="City"
-              />
-            </div>
-            <div class="form__group">
-              <label class="form__label">State/Province</label>
-              <input
-                type="text"
-                v-model="form.address.state"
-                class="form__control"
-                placeholder="State / Province"
-              />
-            </div>
-            <div class="form__group">
-              <label class="form__label">Postal Code</label>
-              <input
-                type="text"
-                v-model="form.address.postal_code"
-                class="form__control"
-                placeholder="Postal code"
-              />
-            </div>
+            <BaseInput
+              label="City"
+              v-model="form.address.city"
+              placeholder="Enter City"
+              :required="true"
+              error=""
+            />
+
+            <BaseInput
+              label="State/Province"
+              v-model="form.address.state"
+              placeholder="Enter State / Province"
+              :required="true"
+              error=""
+            />
+
+            <BaseInput
+              label="Postal Code"
+              v-model="form.address.postal_code"
+              placeholder="Enter Postal Code"
+              :required="true"
+              error=""
+            />
           </div>
 
-          <div class="form__group">
-            <label class="form__label">Notes</label>
-            <textarea
-              v-model="form.note"
-              class="form__control"
-              rows="5"
-              placeholder="Any special instructions for delivery? (optional)"
-            >
-            </textarea>
-          </div>
+          <BaseTextarea
+            label="Notes"
+            v-model="form.note"
+            placeholder="Any special instructions for delivery? (optional)"
+            :required="false"
+            error=""
+          />
         </div>
       </div>
 
       <!-- Order Summary -->
-      <div class="flex-none w-full max-w-md">
+      <div class="flex-none">
         <div class="card">
           <div class="card__header">
             <h3 class="card__title">Order Summary</h3>
           </div>
 
-          <div class="card__body divide-y divide-dashed">
+          <div class="card__body divide-y divide-dashed space-y-4">
             <!-- Cart Items -->
             <div class="space-y-2 py-4">
               <div
@@ -176,13 +164,13 @@ const submit = async () => {
                 :key="item.id"
                 class="flex items-center justify-between"
               >
-                <div class="flex items-center gap-2">
+                <div class="w-full flex items-center gap-2">
                   <img
                     :src="item.image_url"
                     class="w-12 h-12 object-cover rounded-md border"
                     :alt="item.name"
                   />
-                  <div class="flex flex-col">
+                  <div class="grow">
                     <span class="text-sm font-medium">{{ item.name }}</span>
                     <div class="flex flex-wrap text-sm">
                       <span
@@ -193,14 +181,11 @@ const submit = async () => {
                       <span
                         class="after:content-['•'] after:mx-2 last:after:content-none"
                       >
-                        SKU: {{ item.sku }}
+                        Price: {{ $currency(item.price) }}
                       </span>
                     </div>
                   </div>
                 </div>
-                <span class="font-semibold">
-                  {{ $currency(item.price) }}
-                </span>
               </div>
             </div>
 
@@ -256,11 +241,13 @@ const submit = async () => {
                 <span>Total</span>
                 <span>{{ $currency(orderSummary.total) }}</span>
               </div>
+              <BaseButton
+                @click="submit"
+                :loading="checkoutStore.loading"
+                class="w-full"
+                >Place Order
+              </BaseButton>
             </div>
-
-            <BaseButton @click="submit" :loading="checkoutStore.loading"
-              >Place Order
-            </BaseButton>
           </div>
         </div>
       </div>

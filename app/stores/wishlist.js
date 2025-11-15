@@ -4,8 +4,7 @@ import apiClient from "~/utils/axios";
 export const useWishlistStore = defineStore("wishlist", {
   state: () => ({
     loading: false,
-    count: 0,
-    items: {},
+    errors: [],
   }),
 
   getters: {},
@@ -19,12 +18,31 @@ export const useWishlistStore = defineStore("wishlist", {
           product_id: product.id,
         });
         if (response.status === 201) {
-          toast.success("Added to wishlist!");
+          toast.success(response.data.message);
           await this.getWishlist();
         }
       } catch (error) {
         if (error.response) {
-          toast.error("Something went wrong!");
+          toast.error(error.response.data.message);
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async remove(product) {
+      this.loading = product.id;
+
+      try {
+        const response = await apiClient.delete(`/api/wishlist/${product.id}`);
+
+        if (response.status === 200) {
+          toast.success(response.data.message || "Removed from wishlist!");
+          await this.getWishlist();
+        }
+      } catch (error) {
+        if (error.response) {
+          toast.error(error.response.data.message || "Something went wrong!");
         }
       } finally {
         this.loading = false;
@@ -34,14 +52,12 @@ export const useWishlistStore = defineStore("wishlist", {
     async getWishlist() {
       try {
         const response = await apiClient.get("/api/wishlist");
-
         if (response.status === 200) {
-          this.count = response.data.count;
-          this.items = response.data.data;
+          return Promise.resolve(response);
         }
       } catch (error) {
         if (error.response) {
-          console.log(error.response.data);
+          return Promise.reject(error.response);
         }
       }
     },

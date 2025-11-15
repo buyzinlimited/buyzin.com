@@ -32,7 +32,7 @@ const submitForm = async () => {
     keywords="Buyzin vendor, sell online Bangladesh, online marketplace Bangladesh, ecommerce seller platform, start selling online, Buyzin marketplace"
   />
 
-  <main>
+  <main class="max-w-7xl mx-auto px-4 py-4">
     <!-- Breadcrumb Section -->
     <section class="bg-[url('/bg-vendor.jpg')] py-16 md:py-32">
       <div class="container mx-auto px-4">
