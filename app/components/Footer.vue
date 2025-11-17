@@ -11,7 +11,7 @@ onMounted(() => {
 <template>
   <footer class="bg-white">
     <div class="bg-primary text-white py-8 md:py-10 lg:py-12">
-      <div class="container mx-auto px-4">
+      <div class="container">
         <h3 class="font-semibold text-xl">
           More brands than any other fashion retailer
         </h3>
@@ -21,7 +21,8 @@ onMounted(() => {
         </span>
       </div>
     </div>
-    <div class="container mx-auto px-4">
+
+    <div class="container">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-12">
         <div class="flex w-full flex-col items-start">
           <NuxtLink to="/" class="mb-3">
@@ -261,12 +262,10 @@ onMounted(() => {
     </div>
 
     <div class="bg-gray-100 text-center py-4">
-      <div class="container mx-auto">
-        <p class="text-sm font-normal text-gray-600">
-          © {{ currentYear }} <a href="/" class="text-primary">Buyzin</a> - All
-          rights reserved.
-        </p>
-      </div>
+      <p class="text-sm font-normal text-gray-600">
+        © {{ currentYear }} <a href="/" class="text-primary">Buyzin</a> - All
+        rights reserved.
+      </p>
     </div>
   </footer>
 </template>

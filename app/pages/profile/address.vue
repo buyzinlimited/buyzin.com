@@ -1,14 +1,15 @@
 <script setup>
-import ProfileLayout from "./ProfileLayout.vue";
+import ProfileLayout from "~/components/ProfileLayout.vue";
 </script>
 
 <template>
   <ProfileLayout>
     <SeoMeta
-      title="My Account | Buyzin - Manage Your Orders & Profile in Bangladesh"
-      description="Access your Buyzin account to view orders, track shipments, manage your profile, and update your preferences. Enjoy seamless online shopping in Bangladesh."
-      keywords="Buyzin My Account, account management Bangladesh, order tracking, profile settings, online shopping dashboard, ecommerce account Bangladesh"
+      title="My Addresses | Buyzin - Manage Your Shipping & Billing Addresses"
+      description="Easily manage your shipping and billing addresses on Buyzin. Add new addresses, edit existing ones, and enjoy faster checkout across Bangladesh."
+      keywords="Buyzin address book, manage addresses, shipping address Bangladesh, billing address BD, ecommerce address management"
     />
+
     <div class="card">
       <div class="card__header">
         <h3 class="card__title">Address</h3>

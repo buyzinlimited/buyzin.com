@@ -1,5 +1,5 @@
 <script setup>
-import ProfileLayout from "./ProfileLayout.vue";
+import ProfileLayout from "~/components/ProfileLayout.vue";
 
 const wishlistStore = useWishlistStore();
 const items = ref(null);
@@ -24,10 +24,11 @@ onMounted(() => {
 <template>
   <ProfileLayout>
     <SeoMeta
-      title="My Account | Buyzin - Manage Your Orders & Profile in Bangladesh"
-      description="Access your Buyzin account to view orders, track shipments, manage your profile, and update your preferences. Enjoy seamless online shopping in Bangladesh."
-      keywords="Buyzin My Account, account management Bangladesh, order tracking, profile settings, online shopping dashboard, ecommerce account Bangladesh"
+      title="My Wishlist | Buyzin - Save Your Favorite Products in Bangladesh"
+      description="Save your favorite products on Buyzin with your personal wishlist. Easily revisit items, compare products, and shop anytime from anywhere in Bangladesh."
+      keywords="Buyzin wishlist, saved products, favorite products Bangladesh, ecommerce wishlist BD, save items for later"
     />
+
     <div class="card">
       <div class="card__header">
         <h3 class="card__title">Wishlist</h3>

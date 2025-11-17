@@ -26,8 +26,11 @@ const addToWishlist = async (product) => {
     <div class="flex items-center justify-between p-2 absolute z-20">
       <span
         class="text-xs font-semibold px-2 py-1 rounded-l rounded-r-full bg-red-100 text-red-500"
-        >12% OFF</span
+        v-if="product.price && product.base_price > product.price"
       >
+        {{ product.currency_symbol
+        }}{{ product.base_price - product.price }} OFF
+      </span>
     </div>
 
     <NuxtLink
@@ -70,17 +73,17 @@ const addToWishlist = async (product) => {
       <div class="flex items-center justify-between py-2">
         <div class="flex items-center gap-2">
           <div v-if="product.price" class="space-x-2">
-            <del class="text-body font-body">{{
-              product.base_price_formatted
-            }}</del>
-            <span class="text-primary font-body font-semibold text-base">{{
-              product.price_formatted
-            }}</span>
+            <del class="text-body font-body"
+              >{{ product.currency_symbol }}{{ product.base_price }}</del
+            >
+            <span class="text-primary font-body font-semibold text-base">
+              {{ product.currency_symbol }}{{ product.price }}
+            </span>
           </div>
           <div v-else>
-            <span class="text-primary font-body font-semibold text-base">{{
-              product.base_price_formatted
-            }}</span>
+            <span class="text-primary font-body font-semibold text-base">
+              {{ product.currency_symbol }}{{ product.base_price }}
+            </span>
           </div>
         </div>
 

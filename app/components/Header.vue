@@ -72,7 +72,7 @@ onUnmounted(() => {
         </div>
 
         <!-- Search bar -->
-        <div class="hidden lg:block grow max-w-xl mx-12">
+        <div class="hidden lg:block grow max-w-sm mx-12">
           <div class="relative w-full mx-auto">
             <div
               class="absolute inset-y-0 left-3 flex items-center pointer-events-none"
@@ -170,32 +170,39 @@ onUnmounted(() => {
                     <li
                       class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 hover:text-primary cursor-pointer rounded transition"
                     >
-                      <icons-icon-profile class="size-5" />
+                      <IconsIconProfile class="size-5" />
                       <NuxtLink to="/profile">My Profile</NuxtLink>
                     </li>
 
                     <li
                       class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 hover:text-primary cursor-pointer rounded transition"
                     >
-                      <icons-icon-list class="size-5" />
+                      <IconsIconList class="size-5" />
                       <NuxtLink to="/profile/orders">Orders</NuxtLink>
                     </li>
 
                     <li
                       class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 hover:text-primary cursor-pointer rounded transition"
                     >
-                      <icons-icon-heart class="size-5" />
+                      <IconsIconLocation class="size-5" />
+                      <NuxtLink to="/profile/address">Address</NuxtLink>
+                    </li>
+
+                    <li
+                      class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 hover:text-primary cursor-pointer rounded transition"
+                    >
+                      <IconsIconHeart class="size-5" />
                       <NuxtLink to="/profile/wishlist">Wishlist</NuxtLink>
                     </li>
 
                     <li
                       class="flex items-center gap-3 px-3 py-2 hover:bg-gray-100 text-red-500 cursor-pointer rounded transition"
                     >
-                      <icons-icon-loading
+                      <IconsIconLoading
                         v-if="authStore.loading"
                         class="size-5 animate-spin"
                       />
-                      <icons-icon-power v-else class="size-5" />
+                      <IconsIconLogout v-else class="size-5" />
                       <button
                         class="flex items-center gap-1 disabled:opacity-50"
                       >

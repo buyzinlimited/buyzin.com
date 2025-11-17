@@ -8,7 +8,10 @@ export const useAuthStore = defineStore("auth", {
     errors: {},
   }),
 
-  persist: true,
+  // persist: true,
+  persist: {
+    path: ["user", "token"],
+  },
 
   getters: {
     loggedIn: (state) => !!state.token,
@@ -92,9 +95,14 @@ export const useAuthStore = defineStore("auth", {
         if (response.status === 200) {
           this.token = response.data.token;
           this.user = response.data.user;
-          return Promise.resolve(response);
+          toast.success(response.data.message);
+          setTimeout(() => {
+            navigateTo("/profile");
+          }, 3000);
         }
       } catch (error) {
+        toast.error(error.response.data.message);
+        this.errors = error.response.data.errors;
         return Promise.reject(error.response);
       } finally {
         this.loading = false;

@@ -28,7 +28,7 @@ useSchemaOrg([
     keywords="shopping cart, checkout, buy online, ecommerce, Buyzin, Bangladesh, cart items, secure payment, online shopping, fast delivery"
   />
   <main class="container mx-auto px-4 py-4">
-    <div class="flex flex-wrap justify-between w-full gap-6">
+    <div class="flex flex-wrap justify-between gap-6">
       <!-- Left side -->
       <div class="bg-white rounded-xl grow p-4">
         <!-- show EmptyCart only when no items -->
@@ -147,7 +147,7 @@ useSchemaOrg([
       </div>
 
       <!-- Right side (Summary) -->
-      <div class="flex-none">
+      <div class="flex-none max-w-full">
         <div class="card">
           <div class="card__header">
             <h3 class="card__title">Cart Summary</h3>

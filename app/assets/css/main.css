@@ -1,8 +1,8 @@
 @import url("../fonts/line-awesome/css/line-awesome.min.css");
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
-@import "tailwindcss";
 @import "@nuxt/ui";
+@import "tailwindcss";
 
 @theme {
   --color-background: #a2f4fd;
@@ -18,7 +18,21 @@
   --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
-  --container: 32rem;
+  --font-script: Great Vibes, cursive;
+
+  --breakpoint-*: initial;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+
+  /* Container max-width breakpoints */
+  --container-center: true;
+  --container-padding: 1rem;
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
 }
 
 @layer base {
@@ -61,6 +75,11 @@
     border-radius: 10px;
   }
 
+  .router-link-active,
+  .router-link-exact-active {
+    @apply text-primary font-semibold;
+  }
+
   .scrollbar:hover::-webkit-scrollbar-thumb {
     background-color: rgba(0, 211, 243, 0.9);
   }
@@ -71,6 +90,38 @@
 
   .base__outline {
     @apply inline-flex items-center justify-center px-4 py-2.5 text-sm font-medium text-white bg-primary rounded hover:bg-primary focus:outline-none transition whitespace-nowrap disabled:opacity-50;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-full capitalize text-xs font-medium;
+  }
+
+  .badge__primary {
+    @apply bg-cyan-100 text-cyan-500;
+  }
+
+  .badge__secondary {
+    @apply bg-gray-100 text-gray-500;
+  }
+
+  .badge__success {
+    @apply bg-green-100 text-green-500;
+  }
+
+  .badge__warning {
+    @apply bg-yellow-100 text-yellow-500;
+  }
+
+  .badge__danger {
+    @apply bg-red-100 text-red-500;
+  }
+
+  .badge__info {
+    @apply bg-indigo-100 text-indigo-500;
+  }
+
+  .badge__dark {
+    @apply bg-gray-800 text-white;
   }
 
   .nav {
