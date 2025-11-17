@@ -154,7 +154,7 @@ const steps = ref([
                   <span class="font-normal"> {{ order?.address.phone }}</span>
                 </div>
               </div>
-              <address class="text-sm">
+              <address class="text-xs">
                 <p>{{ order.address.address }}</p>
                 <p>
                   {{ order.address.city }}, {{ order.address.state }},
@@ -183,7 +183,7 @@ const steps = ref([
                     <NuxtImg
                       :src="item.product?.image_url"
                       alt="House"
-                      class="size-8 rounded"
+                      class="size-12 rounded"
                     />
                   </div>
                   <div class="grow">

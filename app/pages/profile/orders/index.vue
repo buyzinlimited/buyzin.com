@@ -121,7 +121,7 @@ onMounted(() => {
           </div>
         </template>
         <template v-else>
-          <UEmpty />
+          <DataTableSkeleton />
         </template>
       </div>
     </div>

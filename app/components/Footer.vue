@@ -11,7 +11,7 @@ onMounted(() => {
 <template>
   <footer class="bg-white">
     <div class="bg-primary text-white py-8 md:py-10 lg:py-12">
-      <div class="container">
+      <div class="max-w-7xl mx-auto px-4">
         <h3 class="font-semibold text-xl">
           More brands than any other fashion retailer
         </h3>
@@ -22,7 +22,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="container">
+    <div class="max-w-7xl mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-12">
         <div class="flex w-full flex-col items-start">
           <NuxtLink to="/" class="mb-3">
@@ -229,31 +229,42 @@ onMounted(() => {
               <div class="group flex items-start gap-3">
                 <icons-icon-location class="size-6 text-body" />
                 <address class="text-body hover:text-primary">
-                  419 State 414 Rte Beaver Dams,<br />
-                  New York(NY), 14812, USA
+                  Tapur Char, Rowmari Sadar,<br />
+                  Rowmari, Kurigram 5640, Bangladesh
                 </address>
               </div>
 
               <!-- Phone -->
               <div class="flex items-center gap-3">
                 <icons-icon-support class="size-6 text-body" />
-                <a
-                  href="tel:(607) 936-8058"
-                  class="text-body hover:text-primary"
-                  >(607) 936-8058 <br />
-                  (607) 936-8058</a
-                >
+                <div class="flex flex-col">
+                  <a href="tel:09649492233" class="text-body hover:text-primary"
+                    >(88096) 4949-2233</a
+                  >
+                  <a
+                    href="tel:8801516598533"
+                    class="text-body hover:text-primary"
+                    >(880) 1516-598533</a
+                  >
+                </div>
               </div>
 
               <!-- Email -->
               <div class="flex items-center gap-3">
                 <icons-icon-email class="size-6 text-body hover:text-primary" />
-                <a
-                  href="mailto:abutoha096@gmail.com"
-                  class="text-body hover:text-primary"
-                  >support@redpointbd.com <br />
-                  admin@example.com</a
-                >
+                <div class="flex flex-col">
+                  <a
+                    href="mailto:support@buyzin.com"
+                    class="text-body hover:text-primary"
+                    >sales@buyzin.com</a
+                  >
+                  <a
+                    href="mailto:support@buyzin.com"
+                    class="text-body hover:text-primary"
+                  >
+                    support@buyzin.com</a
+                  >
+                </div>
               </div>
             </div>
           </div>
