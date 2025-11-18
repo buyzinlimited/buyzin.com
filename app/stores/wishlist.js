@@ -5,6 +5,7 @@ export const useWishlistStore = defineStore("wishlist", {
   state: () => ({
     loading: false,
     errors: [],
+    items: [],
   }),
 
   getters: {},
@@ -30,22 +31,18 @@ export const useWishlistStore = defineStore("wishlist", {
       }
     },
 
-    async remove(product) {
-      this.loading = product.id;
-
+    async remove(wishlist) {
       try {
-        const response = await apiClient.delete(`/api/wishlist/${product.id}`);
+        const response = await apiClient.delete(`/api/wishlist/${wishlist}`);
 
         if (response.status === 200) {
-          toast.success(response.data.message || "Removed from wishlist!");
+          toast.success(response.data.message);
           await this.getWishlist();
         }
       } catch (error) {
         if (error.response) {
-          toast.error(error.response.data.message || "Something went wrong!");
+          toast.error(error.response.data.message);
         }
-      } finally {
-        this.loading = false;
       }
     },
 
@@ -53,6 +50,7 @@ export const useWishlistStore = defineStore("wishlist", {
       try {
         const response = await apiClient.get("/api/wishlist");
         if (response.status === 200) {
+          this.items = response.data;
           return Promise.resolve(response);
         }
       } catch (error) {

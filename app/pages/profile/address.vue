@@ -14,13 +14,16 @@ onMounted(() => {
 </script>
 
 <template>
-  <ProfileLayout>
-    <SeoMeta
-      title="My Addresses | Buyzin - Manage Your Shipping & Billing Addresses"
-      description="Easily manage your shipping and billing addresses on Buyzin. Add new addresses, edit existing ones, and enjoy faster checkout across Bangladesh."
-      keywords="Buyzin address book, manage addresses, shipping address Bangladesh, billing address BD, ecommerce address management"
+  <Head>
+    <Title
+      >My Addresses | Buyzin - Manage Your Shipping & Billing Addresses</Title
+    >
+    <Meta
+      name="description"
+      content="Easily manage your shipping and billing addresses on Buyzin. Add new addresses, edit existing ones, and enjoy faster checkout across Bangladesh."
     />
-
+  </Head>
+  <ProfileLayout>
     <div class="card">
       <div class="card__header">
         <h3 class="card__title">Address</h3>

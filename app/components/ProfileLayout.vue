@@ -1,5 +1,12 @@
 <script setup>
 const route = useRoute();
+const authStore = useAuthStore();
+
+const logout = async () => {
+  if (confirm("Are you sure you went to logout?")) {
+    await authStore.logout();
+  }
+};
 </script>
 
 <template>
@@ -75,7 +82,8 @@ const route = useRoute();
           <li>
             <button
               type="button"
-              class="flex items-center gap-2 font-medium p-2 rounded hover:bg-gray-100"
+              @click="logout"
+              class="w-full flex items-center gap-2 font-medium p-2 rounded hover:bg-gray-100"
             >
               <IconsIconLogout class="size-5" />
               <span>Logout</span>
@@ -85,7 +93,7 @@ const route = useRoute();
       </aside>
 
       <!-- Content -->
-      <div class="flex-1">
+      <div class="flex-1 relative overflow-x-auto">
         <slot />
       </div>
     </div>

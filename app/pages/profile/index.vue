@@ -26,18 +26,23 @@ onMounted(() => {
 </script>
 
 <template>
-  <ProfileLayout>
-    <SeoMeta
-      title="My Account | Buyzin - Manage Your Orders & Profile in Bangladesh"
-      description="Access your Buyzin account to view orders, track shipments, manage your profile, and update your preferences. Enjoy seamless online shopping in Bangladesh."
-      keywords="Buyzin My Account, account management Bangladesh, order tracking, profile settings, online shopping dashboard, ecommerce account Bangladesh"
+  <Head>
+    <Title
+      >My Account | Buyzin - Manage Your Orders & Profile in Bangladesh</Title
+    >
+    <Meta
+      name="description"
+      content="Access your Buyzin account to view orders, track shipments, manage your profile, and update your preferences. Enjoy seamless online shopping in Bangladesh."
     />
-
-    <div class="card">
-      <div class="card__header">
-        <h3 class="card__title">Personal Information</h3>
+  </Head>
+  <ProfileLayout>
+    <div class="bg-white rounded-xl">
+      <div
+        class="px-4 py-3 border-b border-border flex items-center justify-between"
+      >
+        <h3 class="text-lg font-semibold text-heading">Personal Information</h3>
       </div>
-      <div class="card__body">
+      <div class="p-4 text-gray-700 relative overflow-x-auto">
         <form @submit.prevent="updateProfile" class="max-w-3xl">
           <div class="grid grid-cols-1 gap-4">
             <BaseInput

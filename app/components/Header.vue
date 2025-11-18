@@ -2,7 +2,6 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useCollectionStore } from "@/stores/collection";
-import MobileNav from "./MobileNav.vue";
 
 const authStore = useAuthStore();
 const cartStore = useCartStore();
@@ -44,6 +43,12 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("click", onClickOutside);
 });
+
+const logout = async () => {
+  if (confirm("Are you sure you went to logout?")) {
+    await authStore.logout();
+  }
+};
 </script>
 
 <template>
@@ -204,6 +209,7 @@ onUnmounted(() => {
                       />
                       <IconsIconLogout v-else class="size-5" />
                       <button
+                        @click="logout"
                         class="flex items-center gap-1 disabled:opacity-50"
                       >
                         <span>Logout</span>

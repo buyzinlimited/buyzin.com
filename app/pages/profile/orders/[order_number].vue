@@ -3,56 +3,16 @@ import ProfileLayout from "~/components/ProfileLayout.vue";
 
 const profileStore = useProfileStore();
 const route = useRoute();
-
 const order = ref(null);
 
 const loadOrder = async () => {
   const response = await profileStore.getOrder(route.params.order_number);
-  console.log(response.data);
   order.value = response.data;
 };
 
 onMounted(() => {
   loadOrder();
 });
-
-const steps = ref([
-  {
-    title: "Pending",
-    description: "Order has been placed",
-    icon: "i-lucide-package",
-  },
-  {
-    title: "Confirmed",
-    description: "Order confirmed by seller",
-    icon: "i-lucide-check-circle",
-  },
-  {
-    title: "Processing",
-    description: "Preparing your order",
-    icon: "i-lucide-loader",
-  },
-  {
-    title: "Shipped",
-    description: "Order is on the way",
-    icon: "i-lucide-truck",
-  },
-  {
-    title: "Delivered",
-    description: "Order delivered to customer",
-    icon: "i-lucide-home",
-  },
-  {
-    title: "Cancelled",
-    description: "Order has been cancelled",
-    icon: "i-lucide-x-circle",
-  },
-  {
-    title: "Returned",
-    description: "Order has been returned",
-    icon: "i-lucide-rotate-ccw",
-  },
-]);
 </script>
 
 <template>
@@ -66,148 +26,230 @@ const steps = ref([
     class="container mx-auto p-2.5"
   />
 
-  <ProfileLayout>
-    <SeoMeta
-      title="Order Details | Buyzin"
-      description="View detailed information about your Buyzin order. Check order items, status, payment method, shipping address, and total amount."
+  <Head>
+    <Title>Order Details | Buyzin</Title>
+    <Meta
+      name="description"
+      content="View detailed information about your Buyzin order. Check order items, status, payment method, shipping address, and total amount."
     />
+  </Head>
 
-    <div class="flex flex-wrap gap-4">
-      <div class="card grow p-4 rounded-xl">
-        <div class="card__header">
-          <h3 class="card__title">Order #: {{ order?.order_number }}</h3>
-          <p class="text-gray-500 mb-4">Placed on: {{ order?.created_at }}</p>
+  <ProfileLayout>
+    <template v-if="order === null">
+      <div class="space-y-6 animate-pulse">
+        <div class="bg-white rounded-xl p-4 space-y-4">
+          <div class="h-6 bg-gray-200 rounded w-1/4"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <div class="h-32 bg-gray-200 rounded"></div>
+            <div class="h-32 bg-gray-200 rounded"></div>
+          </div>
         </div>
-        <div class="card__body">
-          <div class="">
-            <div v-if="order" class="grow">
-              <div class="flex flex-wrap gap-2 mb-4">
-                <span class="font-medium text-gray-700">Status:</span>
-                <span
-                  :class="[
-                    'badge',
-                    {
-                      badge__primary: order.status === 'pending',
-                      badge__success: order.status === 'delivered',
-                      badge__warning: order.status === 'processing',
-                    },
-                  ]"
-                >
-                  {{ order.status }}
-                </span>
 
-                <span class="font-medium text-gray-700 ml-4">Payment:</span>
-                <span
-                  :class="[
-                    'badge',
-                    {
-                      badge__success: order.payment_status === 'paid',
-                      badge__warning: order.payment_status === 'unpaid',
-                    },
-                  ]"
-                >
-                  {{ order.payment_status }}
-                </span>
+        <div class="bg-white rounded-xl p-4 space-y-4">
+          <div class="h-6 bg-gray-200 rounded w-1/4"></div>
+          <div class="space-y-2">
+            <div class="h-16 bg-gray-200 rounded"></div>
+            <div class="h-16 bg-gray-200 rounded"></div>
+            <div class="h-16 bg-gray-200 rounded"></div>
+          </div>
+        </div>
 
-                <span class="font-medium text-gray-700 ml-4">Method:</span>
+        <div class="bg-white rounded-xl p-4 space-y-4">
+          <div class="h-6 bg-gray-200 rounded w-1/4"></div>
+          <div class="h-32 bg-gray-200 rounded"></div>
+        </div>
+      </div>
+    </template>
+
+    <template v-else>
+      <div class="space-y-6">
+        <!-- Order Summary -->
+        <div class="bg-white rounded-xl">
+          <div class="px-4 py-3 border-b border-border">
+            <div class="border-b border-gray-200 pb-3 mb-4">
+              <h3 class="text-lg font-semibold text-gray-800">
+                Order #: {{ order?.order_number }}
+              </h3>
+              <p class="text-sm text-gray-500">
+                Placed on: {{ order?.created_at }}
+              </p>
+            </div>
+            <div class="flex flex-wrap gap-4 text-sm">
+              <div class="space-x-2">
+                <span class="font-medium">Status:</span>
                 <span
                   :class="[
-                    'badge',
+                    'px-2 py-1 rounded-full text-white text-xs capitalize',
                     {
-                      badge__primary: order.payment_method === 'sslcommerz',
-                      badge__success: order.payment_method === 'bkash',
+                      'bg-yellow-500': order?.status === 'pending',
+                      'bg-green-500': order?.status === 'delivered',
+                      'bg-blue-500': order?.status === 'processing',
+                      'bg-red-500': order?.status === 'cancelled',
                     },
                   ]"
                 >
-                  {{ order.payment_method }}
+                  {{ order?.status }}
                 </span>
               </div>
 
-              <UStepper orientation="vertical" :items="steps" class="w-full" />
+              <div class="space-x-2">
+                <span class="font-medium text-gray-700">Payment:</span>
+                <span
+                  :class="[
+                    'px-2 py-1 rounded-full text-white text-xs capitalize',
+                    {
+                      'bg-green-500': order?.payment_status === 'paid',
+                      'bg-yellow-500': order?.payment_status === 'unpaid',
+                      'bg-red-500': order?.payment_status === 'failed',
+                    },
+                  ]"
+                >
+                  {{ order?.payment_status }}
+                </span>
+              </div>
+
+              <div class="space-x-2">
+                <span class="font-medium text-gray-700">Method:</span>
+                <span
+                  :class="[
+                    'px-2 py-1 rounded-full text-white text-xs capitalize',
+                    {
+                      'bg-blue-500': order?.payment_method === 'sslcommerz',
+                      'bg-green-500': order?.payment_method === 'bkash',
+                      'bg-yellow-500': order?.payment_method === 'cod',
+                    },
+                  ]"
+                >
+                  {{ order?.payment_method }}
+                </span>
+              </div>
             </div>
+          </div>
+          <!-- Shipping & Billing -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+            <div class="bg-white p-4">
+              <div class="flex items-center gap-2 border-b pb-2 mb-3">
+                <IconsIconTruck class="size-5 text-gray-600" />
+                <h4 class="font-semibold text-gray-800">Shipping Address</h4>
+              </div>
+
+              <div v-if="order?.shipment?.shipping_address" class="space-y-2">
+                <p class="font-medium text-gray-700">
+                  {{ order.shipment.customer_name }}
+                </p>
+                <p class="text-gray-600">{{ order.shipment.customer_phone }}</p>
+                <address class="text-gray-600 text-sm not-italic">
+                  {{ order.shipment.shipping_address.address_line_1 }},
+                  {{ order.shipment.shipping_address.address_line_2 }}<br />
+                  {{ order.shipment.shipping_address.city }},
+                  {{ order.shipment.shipping_address.state }},
+                  {{ order.shipment.shipping_address.postal_code }}<br />
+                  {{ order.shipment.shipping_address.country }}
+                </address>
+              </div>
+            </div>
+
+            <div class="bg-white p-4">
+              <div class="flex items-center gap-2 border-b pb-2 mb-3">
+                <IconsIconTruck class="size-5 text-gray-600" />
+                <h4 class="font-semibold text-gray-800">Billing Address</h4>
+              </div>
+
+              <div v-if="order?.shipment?.billing_address" class="space-y-2">
+                <p class="font-medium text-gray-700">
+                  {{ order.shipment.customer_name }}
+                </p>
+                <p class="text-gray-600">{{ order.shipment.customer_phone }}</p>
+                <address class="text-gray-600 text-sm not-italic">
+                  {{ order.shipment.billing_address.address_line_1 }},
+                  {{ order.shipment.billing_address.address_line_2 }}<br />
+                  {{ order.shipment.billing_address.city }},
+                  {{ order.shipment.billing_address.state }},
+                  {{ order.shipment.billing_address.postal_code }}<br />
+                  {{ order.shipment.billing_address.country }}
+                </address>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Items -->
+        <div class="bg-white rounded-xl p-4">
+          <div class="flex items-center gap-2 border-b pb-2 mb-3">
+            <IconsIconList class="size-5 text-gray-600" />
+            <h4 class="font-semibold text-gray-800">Order Items</h4>
+          </div>
+
+          <div v-if="order?.items" class="space-y-4">
+            <div
+              v-for="item in order.items"
+              :key="item.id"
+              class="flex items-center gap-3 border-b border-gray-100 pb-2"
+            >
+              <NuxtImg
+                :src="item.product.image_url"
+                :alt="item.product.name"
+                class="w-16 h-16 object-cover rounded"
+              />
+              <div class="flex-1">
+                <h5 class="text-sm font-semibold text-gray-800 line-clamp-1">
+                  {{ item.product.name }}
+                </h5>
+                <div class="flex items-center gap-2 text-sm text-gray-600">
+                  <span>{{ item.price.toFixed(0) }} x {{ item.quantity }}</span>
+                  <span class="font-medium"
+                    >{{ item.currency_symbol }}{{ item.total.toFixed(0) }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipment Tracking -->
+        <div v-if="order?.shipment" class="bg-white rounded-xl p-4">
+          <div class="flex items-center gap-2 border-b pb-2 mb-3">
+            <IconsIconTruck class="size-5 text-gray-600" />
+            <h4 class="font-semibold text-gray-800">Shipment Tracking</h4>
+          </div>
+
+          <div class="space-y-2 text-sm text-gray-700">
+            <p>
+              <span class="font-medium">Carrier:</span>
+              {{ order.shipment.carrier }}
+            </p>
+            <p>
+              <span class="font-medium">Tracking Number:</span>
+              {{ order.shipment.tracking_number }}
+            </p>
+            <p>
+              <span class="font-medium">Shipping Cost:</span>
+              {{ order.shipment.shipping_cost }}
+            </p>
+            <p>
+              <span class="font-medium">Weight:</span>
+              {{ order.shipment.weight }} kg
+            </p>
+            <p>
+              <span class="font-medium">Package Type:</span>
+              {{ order.shipment.package_type }}
+            </p>
+            <p>
+              <span class="font-medium">Estimated Delivery:</span>
+              {{ order.shipment.estimated_delivery_date }}
+            </p>
+            <p>
+              <span class="font-medium">Notes:</span> {{ order.shipment.notes }}
+            </p>
+            <p>
+              <span class="font-medium">Status:</span>
+              {{ order.shipment.status }}
+            </p>
           </div>
         </div>
       </div>
-
-      <div class="flex-none md:w-64 max-w-full space-y-4">
-        <!-- Shipping Address -->
-        <div class="bg-white rounded-xl">
-          <div class="space-y-2.5 p-4">
-            <div class="flex items-center gap-2 py-2 border-b">
-              <IconsIconTruck class="size-5" />
-              <h4 class="font-semibold text-heading">Shipping Address</h4>
-            </div>
-
-            <div v-if="order?.address" class="space-y-2">
-              <div class="flex items-start">
-                <div class="flex-none bg-green-200 rounded-xl p-2">
-                  <NuxtImg
-                    src="/icons/house.png"
-                    alt="House"
-                    class="size-8 rounded"
-                  />
-                </div>
-                <div class="ml-2">
-                  <h4 class="font-semibold">
-                    {{ order?.address.name }}
-                  </h4>
-                  <span class="font-normal"> {{ order?.address.phone }}</span>
-                </div>
-              </div>
-              <address class="text-xs">
-                <p>{{ order.address.address }}</p>
-                <p>
-                  {{ order.address.city }}, {{ order.address.state }},
-                  {{ order.address.postal_code }}
-                </p>
-                <p>
-                  {{ order.address.country }}
-                </p>
-              </address>
-            </div>
-          </div>
-        </div>
-
-        <!-- Orders Items -->
-        <div class="bg-white rounded-xl">
-          <div class="space-y-2.5 p-4">
-            <div class="flex items-center gap-2 py-2 border-b">
-              <IconsIconList class="size-5" />
-              <h4 class="font-semibold text-heading">Orders Items</h4>
-            </div>
-
-            <template v-if="order?.items">
-              <div v-for="item in order.items" class="block">
-                <div class="flex items-start gap-2">
-                  <div class="flex-none rounded-xl">
-                    <NuxtImg
-                      :src="item.product?.image_url"
-                      alt="House"
-                      class="size-12 rounded"
-                    />
-                  </div>
-                  <div class="grow">
-                    <h4 class="text-sm font-semibold line-clamp-1">
-                      {{ item.product?.name }}
-                    </h4>
-                    <div class="space-x-2 text-xs">
-                      <span class="font-normal">
-                        {{ item.price.toFixed(0) }}x{{ item.quantity }}
-                      </span>
-
-                      <span class="font-normal"
-                        >{{ item.currency_symbol
-                        }}{{ item.total.toFixed(0) }}</span
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </template>
-          </div>
-        </div>
-      </div>
-    </div>
+    </template>
   </ProfileLayout>
 </template>
 

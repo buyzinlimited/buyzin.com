@@ -2,14 +2,15 @@
 import ProfileLayout from "~/components/ProfileLayout.vue";
 
 const profileStore = useProfileStore();
-
 const orders = ref(null);
-const page = ref(5);
+const page = ref(1);
 
 const loadOrders = async () => {
-  const response = await profileStore.getOrders();
+  const response = await profileStore.getOrders(page.value);
   orders.value = response.data;
 };
+
+watch(page, () => loadOrders());
 
 onMounted(() => {
   loadOrders();
@@ -17,98 +18,125 @@ onMounted(() => {
 </script>
 
 <template>
-  <ProfileLayout>
-    <SeoMeta
-      title="My Orders | Buyzin - Track Your Online Orders in Bangladesh"
-      description="View and track all your Buyzin orders easily. Check order status, shipment details, delivery updates, and past purchase history."
-      keywords="Buyzin orders, order tracking Bangladesh, online shopping, order status, ecommerce orders BD"
+  <Head>
+    <Title>My Orders | Buyzin - Track Your Online Orders in Bangladesh</Title>
+    <Meta
+      name="description"
+      content="View and track all your Buyzin orders easily. Check order status, shipment details, delivery updates, and past purchase history."
     />
-    <div class="card">
-      <div class="card__header">
-        <h3 class="card__title">Orders</h3>
+  </Head>
+  <ProfileLayout>
+    <div class="bg-white rounded-xl">
+      <div
+        class="px-4 py-3 border-b border-gray-200 flex items-center justify-between"
+      >
+        <h3 class="text-lg font-semibold text-gray-800">Orders</h3>
       </div>
-      <div class="card__body">
+      <div class="relative overflow-x-auto p-4">
         <template v-if="orders?.data">
-          <table>
-            <thead>
+          <table class="w-full text-sm text-left text-body">
+            <thead class="bg-gray-50">
               <tr>
-                <th>ID</th>
-                <th>Subtotal</th>
-                <th>Total</th>
-                <th>Status</th>
-                <th>Method</th>
-                <th>Payment</th>
-                <th>Action</th>
+                <th scope="col" class="px-4 py-2">ID</th>
+                <th scope="col" class="px-4 py-2">Subtotal</th>
+                <th scope="col" class="px-4 py-2">Total</th>
+                <th scope="col" class="px-4 py-2">Status</th>
+                <th scope="col" class="px-4 py-2">Method</th>
+                <th scope="col" class="px-4 py-2">Payment</th>
+                <th scope="col" class="px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="order in orders?.data">
-                <th>#{{ order?.order_number }}</th>
-                <td>
+              <tr
+                v-for="order in orders?.data"
+                :key="order.order_number"
+                class="odd:bg-white even:bg-gray-100"
+              >
+                <td scope="row" class="px-4 py-2 whitespace-nowrap">
+                  #{{ order.order_number }}
+                </td>
+                <td class="px-4 py-2 whitespace-nowrap">
                   {{ order.currency_symbol
                   }}{{ Number(order.subtotal).toFixed(0) }}
                 </td>
-
-                <td>
+                <td class="px-4 py-2 whitespace-nowrap">
                   {{ order.currency_symbol
                   }}{{ Number(order.total).toFixed(0) }}
                 </td>
-                <td>
+
+                <!-- Status Badge -->
+                <td class="px-4 py-2 whitespace-nowrap">
                   <span
-                    v-if="order.status"
                     :class="[
-                      'badge',
+                      'px-3 py-1 rounded-full text-xs font-semibold capitalize',
                       {
-                        badge__primary: order.status === 'pending',
-                        badge__secondary: order.status === 'confirmed',
-                        badge__warning: order.status === 'processing',
-                        badge__info: order.status === 'shipped',
-                        badge__success: order.status === 'delivered',
-                        badge__danger: order.status === 'cancelled',
-                        badge__dark: order.status === 'returned',
+                        'bg-yellow-100 text-yellow-700':
+                          order.status === 'pending',
+                        'bg-blue-100 text-blue-700':
+                          order.status === 'confirmed',
+                        'bg-orange-100 text-orange-700':
+                          order.status === 'processing',
+                        'bg-sky-100 text-sky-700': order.status === 'shipped',
+                        'bg-green-100 text-green-700':
+                          order.status === 'delivered',
+                        'bg-red-100 text-red-700': order.status === 'cancelled',
+                        'bg-gray-300 text-gray-700':
+                          order.status === 'returned',
                       },
                     ]"
                   >
                     {{ order.status }}
                   </span>
                 </td>
-                <td>
+
+                <!-- Payment Method Badge -->
+                <td class="px-4 py-2 whitespace-nowrap">
                   <span
-                    v-if="order.payment_method"
                     :class="[
-                      'badge',
+                      'px-3 py-1 rounded-full text-xs font-semibold capitalize',
                       {
-                        badge__primary: order.payment_method === 'sslcommerz',
-                        badge__success: order.payment_method === 'bkash',
-                        badge__warning: order.payment_method === 'nagad',
-                        badge__secondary: order.payment_method === 'cod',
-                        badge__info: order.payment_method === 'manual',
+                        'bg-blue-100 text-blue-700':
+                          order.payment_method === 'sslcommerz',
+                        'bg-green-100 text-green-700':
+                          order.payment_method === 'bkash',
+                        'bg-orange-100 text-orange-700':
+                          order.payment_method === 'nagad',
+                        'bg-gray-200 text-gray-700':
+                          order.payment_method === 'cod',
+                        'bg-sky-100 text-sky-700':
+                          order.payment_method === 'manual',
                       },
                     ]"
                   >
                     {{ order.payment_method }}
                   </span>
                 </td>
-                <td>
+
+                <!-- Payment Status Badge -->
+                <td class="px-4 py-2 whitespace-nowrap">
                   <span
-                    v-if="order.payment_status"
                     :class="[
-                      'badge',
+                      'px-3 py-1 rounded-full text-xs font-semibold capitalize',
                       {
-                        badge__warning: order.payment_status === 'unpaid',
-                        badge__success: order.payment_status === 'paid',
-                        badge__danger: order.payment_status === 'failed',
-                        badge__secondary: order.payment_status === 'refunded',
+                        'bg-yellow-100 text-yellow-700':
+                          order.payment_status === 'unpaid',
+                        'bg-green-100 text-green-700':
+                          order.payment_status === 'paid',
+                        'bg-red-100 text-red-700':
+                          order.payment_status === 'failed',
+                        'bg-gray-200 text-gray-700':
+                          order.payment_status === 'refunded',
                       },
                     ]"
                   >
                     {{ order.payment_status }}
                   </span>
                 </td>
-                <td>
+
+                <td class="px-4 py-2 whitespace-nowrap">
                   <NuxtLink
                     :to="`/profile/orders/${order.order_number}`"
-                    class="badge badge__primary"
+                    class="text-primary font-medium hover:underline"
                   >
                     View
                   </NuxtLink>
@@ -116,10 +144,17 @@ onMounted(() => {
               </tr>
             </tbody>
           </table>
-          <div class="flex items-end justify-end py-4">
-            <UPagination v-model:page="page" :total="100" />
+          <!-- Pagination -->
+          <div class="flex justify-end mt-4" v-if="orders?.meta">
+            <UPagination
+              v-model:page="page"
+              :page-count="orders.meta.last_page"
+              :total="orders.meta.total"
+            />
           </div>
         </template>
+
+        <!-- Loading Skeleton -->
         <template v-else>
           <DataTableSkeleton />
         </template>
@@ -127,5 +162,3 @@ onMounted(() => {
     </div>
   </ProfileLayout>
 </template>
-
-<style scoped></style>
