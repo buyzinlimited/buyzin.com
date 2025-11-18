@@ -25,37 +25,31 @@ const loadOrder = async () => {
 
 const steps = ref([
   {
-    slot: "place",
     title: "Order Placed",
     description: "We have received your order and it is awaiting confirmation.",
     icon: "i-lucide-shopping-cart",
   },
   {
-    slot: "confirmed",
     title: "Confirmed",
     description: "Your order has been confirmed and is being prepared.",
     icon: "i-lucide-check-circle",
   },
   {
-    slot: "processing",
     title: "Processing",
     description: "Our team is packaging your items and preparing for shipment.",
     icon: "i-lucide-sun",
   },
   {
-    slot: "shipped",
     title: "Shipped",
     description: "Your order is on the way via our courier partner.",
     icon: "i-lucide-truck",
   },
   {
-    slot: "out_of_delivery",
     title: "Out for Delivery",
     description: "The courier is delivering your order to your address.",
     icon: "i-lucide-map-pin",
   },
   {
-    slot: "delivered",
     title: "Delivered",
     description: "Your order has been delivered successfully.",
     icon: "i-lucide-home",
@@ -126,176 +120,198 @@ onUnmounted(() => {
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="col-span-2 block space-y-4">
               <!-- Timeline -->
-              <div class="bg-white rounded-xl p-4 border border-border">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4">
-                  Shipment Timeline
-                </h2>
-
-                <UStepper
-                  :orientation="orientation"
-                  :items="steps"
-                  class="w-full"
-                >
-                </UStepper>
+              <div class="bg-white rounded-xl border border-border">
+                <div class="py-2">
+                  <h2 class="text-lg font-semibold text-heading border-b p-2">
+                    Shipment Timeline
+                  </h2>
+                  <div class="px-4 py-6">
+                    <UStepper
+                      :orientation="orientation"
+                      disabled
+                      :items="steps"
+                      v-model="order.current_step"
+                      class="w-full"
+                    >
+                    </UStepper>
+                  </div>
+                </div>
               </div>
 
               <!-- Items list -->
-              <div class="bg-white rounded-xl p-4 border border-border">
-                <h2 class="text-lg font-semibold text-gray-800 mb-4">
-                  Items in this order
-                </h2>
-                <ul class="divide-y">
-                  <li
-                    v-for="item in order.items"
-                    :key="item.id"
-                    class="py-4 flex items-center justify-between"
-                  >
-                    <div class="flex items-start gap-4">
-                      <div class="w-14 h-14 bg-gray-100">
-                        <NuxtImg :src="item.product?.image_url" />
-                      </div>
-                      <div>
-                        <div class="text-sm font-medium text-gray-800">
-                          {{ item.product?.name }}
+              <div class="bg-white rounded-xl border border-border">
+                <div class="py-2">
+                  <h2 class="text-lg font-semibold text-heading border-b p-2">
+                    Items in this order
+                  </h2>
+                </div>
+
+                <div class="px-4 py-6">
+                  <ul class="divide-y">
+                    <li
+                      v-for="item in order.items"
+                      :key="item.id"
+                      class="py-2 flex items-center justify-between"
+                    >
+                      <div class="flex items-start gap-4">
+                        <div class="w-14 h-14 bg-gray-100">
+                          <NuxtImg :src="item.product?.image_url" />
                         </div>
-                        <div class="text-xs text-gray-500">
-                          Quantity: {{ item.quantity }}
+                        <div>
+                          <div class="text-sm font-medium text-gray-800">
+                            {{ item.product?.name }}
+                          </div>
+                          <div class="text-xs text-gray-500">
+                            Quantity: {{ item.quantity }}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div class="text-sm font-semibold text-gray-800">
-                      {{ item.currency_symbol
-                      }}{{ (item.price * item.quantity).toFixed(2) }}
-                    </div>
-                  </li>
-                </ul>
+                      <div class="text-sm font-semibold text-gray-800">
+                        {{ item.currency_symbol
+                        }}{{ (item.price * item.quantity).toFixed(2) }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <aside class="space-y-6">
-              <div class="bg-gray-100 rounded-xl p-6">
-                <h3 class="text-md font-semibold text-heading mb-3">
-                  Order Summary
-                </h3>
-                <ul class="space-y-2">
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Order Number:</span>
-                    <span class="text-sm">{{ order.order_number }}</span>
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Order Date: </span>
-                    <span class="text-sm">{{
-                      new Date(order.created_at).toDateString()
-                    }}</span>
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Payment</span>
-                    <span class="text-sm capitalize"
-                      >{{ order.payment_method }} •
-                      {{ order.payment_status }}</span
-                    >
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Items</span>
-                    <span class="text-sm">({{ order.items?.length }})</span>
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Discount</span>
-                    <span class="text-sm"
-                      >{{ order.currency_symbol }}{{ order.discount }}</span
-                    >
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Shipping Cost</span>
-                    <span class="text-sm"
-                      >{{ order.currency_symbol
-                      }}{{ order.shipping_cost }}</span
-                    >
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Tax</span>
-                    <span class="text-sm"
-                      >{{ order.currency_symbol }}{{ order.tax }}</span
-                    >
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Tax</span>
-                    <span class="text-sm"
-                      >{{ order.currency_symbol }}{{ order.tax }}</span
-                    >
-                  </li>
-                  <li class="flex justify-between">
-                    <span class="text-sm font-semibold">Total</span>
-                    <span class="text-sm"
-                      >{{ order.currency_symbol }}{{ order.total }}</span
-                    >
-                  </li>
-                </ul>
-              </div>
-              <div v-if="order.address" class="bg-gray-100 rounded-xl p-6">
-                <h3 class="text-md font-semibold text-gray-800 mb-3">
-                  Delivery Address
-                </h3>
-                <p class="text-sm text-gray-700 font-medium">
-                  {{ order.address.name }}
-                </p>
-                <p class="text-sm text-gray-500">{{ order.address.phone }}</p>
-                <p class="text-sm text-gray-500 mt-2">
-                  {{ order.address.address }}
-                </p>
-              </div>
-
-              <div v-if="order.shipment" class="bg-gray-100 rounded-xl p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4">
-                  Shipment Details
-                </h3>
-
-                <div class="flex items-center gap-3">
-                  <NuxtImg
-                    src="/courier.png"
-                    alt="Courier Logo"
-                    loading="lazy"
-                    class="bg-white p-2 h-16 w-16 object-contain rounded-full border border-border"
-                  />
-                  <div>
-                    <p class="text-sm font-medium text-gray-800">
-                      {{ order.shipment?.carrier }}
-                    </p>
-                    <p class="text-xs text-gray-500">
-                      Tracking:
-                      <span class="font-medium text-gray-700">
-                        {{ order.shipment?.tracking_number }}
-                      </span>
-                    </p>
-                  </div>
+              <div class="bg-gray-100 rounded-xl">
+                <div class="py-2">
+                  <h3 class="text-md font-semibold text-heading border-b p-2">
+                    Order Summary
+                  </h3>
                 </div>
 
+                <div class="px-4 py-2">
+                  <ul class="space-y-2">
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Order Number:</span>
+                      <span class="text-sm">{{ order.order_number }}</span>
+                    </li>
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Order Date: </span>
+                      <span class="text-sm">{{
+                        new Date(order.created_at).toDateString()
+                      }}</span>
+                    </li>
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Payment</span>
+                      <span class="text-sm capitalize"
+                        >{{ order.payment_method }} •
+                        {{ order.payment_status }}</span
+                      >
+                    </li>
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Items</span>
+                      <span class="text-sm">({{ order.items?.length }})</span>
+                    </li>
+
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Subtotal</span>
+                      <span class="text-sm"
+                        >{{ order.currency_symbol
+                        }}{{ order.total.toFixed(0) }}</span
+                      >
+                    </li>
+
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Paid</span>
+                      <span class="text-sm"
+                        >{{ order.currency_symbol
+                        }}{{ order.paid_amount.toFixed(0) }}</span
+                      >
+                    </li>
+
+                    <li class="flex justify-between">
+                      <span class="text-sm font-semibold">Total</span>
+                      <span class="text-sm font-semibold"
+                        >{{ order.currency_symbol
+                        }}{{
+                          (order.total - order.paid_amount).toFixed(0)
+                        }}</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div v-if="order.address" class="bg-gray-100 rounded-xl">
                 <div class="py-2">
-                  <div class="block">
-                    <span class="font-semibold text-gray-800">Cost:</span>
-                    {{ order.shipment?.shipping_cost }}
-                    {{ order.currency_symbol }}
+                  <h3 class="text-md font-semibold text-heading border-b p-2">
+                    Delivery Address
+                  </h3>
+                </div>
+                <div class="px-4 py-2">
+                  <h4 class="text-sm text-heading font-medium">
+                    {{ order.address.name }}
+                  </h4>
+                  <p class="text-sm">Phone: {{ order.address.phone }}</p>
+                  <address class="text-sm mt-2">
+                    {{ order.address.address }}
+                  </address>
+                  <p>{{ order.address?.city }}, {{ order.address?.state }}</p>
+                  <p>
+                    {{ order.address?.postal_code }},
+                    {{ order.address?.country }}
+                  </p>
+                </div>
+              </div>
+
+              <div v-if="order.shipment" class="bg-gray-100 rounded-xl">
+                <div class="py-2">
+                  <h3 class="text-md font-semibold text-heading border-b p-2">
+                    Shipment Details
+                  </h3>
+                </div>
+
+                <div class="px-4 py-2">
+                  <div class="flex items-center gap-3">
+                    <NuxtImg
+                      src="/courier.png"
+                      alt="Courier Logo"
+                      loading="lazy"
+                      class="bg-white p-2 h-16 w-16 object-contain rounded-full border border-border"
+                    />
+                    <div>
+                      <p class="text-sm font-medium text-gray-800">
+                        {{ order.shipment?.carrier }}
+                      </p>
+                      <p class="text-xs text-gray-500">
+                        Tracking:
+                        <span class="font-medium text-gray-700">
+                          {{ order.shipment?.tracking_number }}
+                        </span>
+                      </p>
+                    </div>
                   </div>
-                  <div class="block">
-                    <span class="font-semibold text-gray-800">Weight:</span>
-                    {{ order.shipment?.weight }} kg
-                  </div>
-                  <div class="block">
-                    <span class="font-semibold text-gray-800">Package:</span>
-                    {{ order.shipment?.package_type }}
-                  </div>
-                  <div class="block">
-                    <span class="font-semibold text-gray-800"
-                      >Estimated Delivery:</span
-                    >
-                    {{
-                      new Date(
-                        order.shipment?.estimated_delivery_date
-                      ).toLocaleDateString()
-                    }}
-                  </div>
-                  <div v-if="order.shipment?.notes" class="block">
-                    <span class="font-semibold text-gray-800">Notes:</span>
-                    {{ order.shipment.notes }}
+                  <div class="py-2">
+                    <div class="block">
+                      <span class="font-semibold text-gray-800">Cost:</span>
+                      {{ order.shipment?.shipping_cost }}
+                      {{ order.currency_symbol }}
+                    </div>
+                    <div class="block">
+                      <span class="font-semibold text-gray-800">Weight:</span>
+                      {{ order.shipment?.weight }} kg
+                    </div>
+                    <div class="block">
+                      <span class="font-semibold text-gray-800">Package:</span>
+                      {{ order.shipment?.package_type }}
+                    </div>
+                    <div class="block">
+                      <span class="font-semibold text-gray-800"
+                        >Estimated Delivery:</span
+                      >
+                      {{
+                        new Date(
+                          order.shipment?.estimated_delivery_date
+                        ).toLocaleDateString()
+                      }}
+                    </div>
+                    <div v-if="order.shipment?.notes" class="block">
+                      <span class="font-semibold text-gray-800">Notes:</span>
+                      {{ order.shipment.notes }}
+                    </div>
                   </div>
                 </div>
               </div>
