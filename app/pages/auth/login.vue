@@ -72,7 +72,7 @@ const submit = async () => {
             </label>
             <RouterLink
               to="/auth/forgot"
-              class="text-sm text-blue-600 hover:underline"
+              class="text-sm text-primary hover:underline"
               >Forget Password?</RouterLink
             >
           </div>

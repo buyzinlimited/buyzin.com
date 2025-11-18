@@ -24,27 +24,25 @@ onMounted(() => {
     />
   </Head>
   <ProfileLayout>
-    <div class="card">
-      <div class="card__header">
-        <h3 class="card__title">Address</h3>
+    <div class="bg-white rounded-xl">
+      <div class="px-4 py-3 border-b border-border">
+        <h3 class="text-lg font-semibold text-heading">Address</h3>
       </div>
-      <div class="card__body">
+      <div class="p-4 relative overflow-x-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
           <template v-if="addresses.data">
             <div
               v-for="address in addresses.data"
               :key="address.id"
-              class="bg-white p-5 rounded-2xl border border-gray-200 transition-all duration-200"
+              class="bg-white rounded-xl border border-gray-200 transition-all duration-200"
             >
-              <!-- Header -->
-              <div class="flex items-center justify-between mb-4">
+              <div
+                class="flex items-center justify-between border-b px-2.5 py-2"
+              >
                 <div class="flex items-center gap-2">
-                  <IconsIconHome
-                    v-if="address.label === 'Home'"
-                    class="size-6"
-                  />
-                  <IconsIconOffice v-else class="size-6" />
-                  <h4 class="text-lg font-semibold capitalize">Address</h4>
+                  <h4 class="text-lg font-semibold capitalize">
+                    {{ address.type }} Address
+                  </h4>
                 </div>
 
                 <button
@@ -55,33 +53,34 @@ onMounted(() => {
                 </button>
               </div>
 
-              <p class="font-medium text-gray-900 text-base mb-1">
-                {{ address.name }}
-              </p>
+              <div class="px-2.5 py-2">
+                <h4 class="font-semibold text-base text-heading">
+                  {{ address.name }}
+                </h4>
 
-              <p class="text-gray-600 leading-relaxed py-2">
-                {{ address.address_line_1 }}<br />
-                <span v-if="address.address_line_2"
-                  >{{ address.address_line_2 }}<br
-                /></span>
-                {{ address.city }}, {{ address.state }} {{ address.postal_code
-                }}<br />
-                {{ address.country }}
-              </p>
-
-              <div
-                class="flex items-center justify-between border-t py-2 border-gray-100"
-              >
-                <p class="text-gray-700 text-sm mb-1">
-                  <strong>Phone:</strong> {{ address.phone }}
+                <p class="text-sm leading-relaxed py-2">
+                  {{ address.address_line_1 }}<br />
+                  <span v-if="address.address_line_2"
+                    >{{ address.address_line_2 }}<br
+                  /></span>
+                  {{ address.city }}, {{ address.state }}
+                  {{ address.postal_code }}<br />
+                  {{ address.country }}
                 </p>
-
-                <span
-                  v-if="address.default"
-                  class="font-semibold text-primary text-xs"
+                <div
+                  class="flex items-center justify-between border-t py-2 border-border"
                 >
-                  Default
-                </span>
+                  <p class="text-gray-700 text-sm mb-1">
+                    <strong>Phone:</strong> {{ address.phone }}
+                  </p>
+
+                  <span
+                    v-if="address.default"
+                    class="font-semibold text-primary text-xs"
+                  >
+                    Default
+                  </span>
+                </div>
               </div>
             </div>
           </template>

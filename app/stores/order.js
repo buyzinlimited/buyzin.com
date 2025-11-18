@@ -5,6 +5,8 @@ export const useOrderStore = defineStore("order", {
   state: () => ({
     loading: false,
     errors: [],
+    orders: [],
+    order: {},
   }),
 
   getters: {},
@@ -42,6 +44,22 @@ export const useOrderStore = defineStore("order", {
         }
       } finally {
         this.loading = false;
+      }
+    },
+
+    async tracking(order_number) {
+      try {
+        const response = await apiClient.get(
+          `api/orders/${order_number}/tracking`
+        );
+
+        if (response.status === 200) {
+          return Promise.resolve(response.data);
+        }
+      } catch (error) {
+        if (error.response) {
+          return Promise.reject(error.response);
+        }
       }
     },
   },

@@ -1,13 +1,11 @@
 <script setup>
-import { useAppStore } from "@/stores/app";
-
 const appStore = useAppStore();
 const route = useRoute();
 const page = ref(null);
 
 const loadPage = async () => {
-  const response = await appStore.getPage(route.params.slug);
-  page.value = response;
+  const response = await appStore.getPage(route.name);
+  page.value = response.data;
 };
 
 onMounted(() => {
@@ -77,87 +75,110 @@ useSchemaOrg([
 </script>
 
 <template>
-  <SeoMeta
-    title="FAQs | Buyzin - Frequently Asked Questions About Shopping in Bangladesh"
-    description="Find answers to frequently asked questions about orders, shipping, payments, returns, and more at Buyzin. Shop confidently with 100% genuine products and secure checkout."
-    keywords="Buyzin FAQ, online shopping help Bangladesh, order support, delivery info, return policy, payment guide, customer service, ecommerce Bangladesh"
-  />
+  <Head>
+    <Title>{{ page?.meta_title ?? "" }}</Title>
+    <Meta name="description" :content="page?.meta_description" />
+    <Meta name="keywords" :content="page?.meta_keywords" />
+  </Head>
 
-  <div class="max-w-4xl mx-auto px-4 py-16">
-    <!-- Page Title -->
-    <h1 class="text-4xl font-bold text-center mb-6 text-gray-800">
-      Frequently Asked Questions
-    </h1>
-    <p class="text-center text-gray-500 mb-10">
-      Find answers to the most common questions about shopping on Buyzin.
-    </p>
-
-    <!-- Search Bar -->
-    <div class="flex justify-center mb-8">
-      <input
-        v-model="searchQuery"
-        type="text"
-        placeholder="Search for a question..."
-        class="w-full max-w-sm border border-border rounded-full px-5 py-3 focus:ring-2 focus:ring-primary focus:outline-none"
-      />
-    </div>
-
-    <!-- FAQ Accordion -->
-    <div class="space-y-4">
-      <div
-        v-for="(faq, index) in filteredFaqs"
-        :key="index"
-        class="border border-border rounded-2xl overflow-hidden"
-      >
-        <button
-          @click="toggle(index)"
-          class="w-full flex justify-between items-center px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 transition"
-        >
-          <span>{{ faq.question }}</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-5 w-5 transform transition-transform duration-200"
-            :class="{ 'rotate-180': activeIndex === index }"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 9l-7 7-7-7"
-            />
-          </svg>
-        </button>
-
-        <transition
-          enter-active-class="transition duration-300 ease-out"
-          enter-from-class="opacity-0 max-h-0"
-          enter-to-class="opacity-100 max-h-screen"
-          leave-active-class="transition duration-200 ease-in"
-          leave-from-class="opacity-100 max-h-screen"
-          leave-to-class="opacity-0 max-h-0"
-        >
+  <main class="max-w-4xl mx-auto px-4 py-6">
+    <div class="bg-white rounded-xl px-4 py-8">
+      <template v-if="page === null">
+        <div class="space-y-6">
           <div
-            v-if="activeIndex === index"
-            class="px-6 pb-4 text-gray-600 bg-gray-50"
-          >
-            {{ faq.answer }}
-          </div>
-        </transition>
-      </div>
-    </div>
+            class="h-10 bg-gray-200 rounded w-3/5 mx-auto animate-pulse"
+          ></div>
 
-    <!-- Empty State -->
-    <div
-      v-if="filteredFaqs.length === 0"
-      class="text-center mt-10 text-gray-500"
-    >
-      No results found for "<strong>{{ searchQuery }}</strong
-      >"
+          <div
+            class="h-6 bg-gray-200 rounded w-2/5 mx-auto animate-pulse"
+          ></div>
+
+          <div class="space-y-4 mt-6">
+            <div
+              v-for="n in 5"
+              :key="n"
+              class="h-4 bg-gray-200 rounded animate-pulse"
+            ></div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="mx-auto">
+          <h1 class="text-4xl font-bold text-center mb-6 text-gray-800">
+            {{ page?.title }}
+          </h1>
+          <p class="text-center text-gray-500 mb-10">
+            {{ page?.subtitle }}
+          </p>
+        </div>
+        <!-- Search Bar -->
+        <div class="flex justify-center mb-8">
+          <input
+            v-model="searchQuery"
+            type="text"
+            placeholder="Search for a question..."
+            class="w-full max-w-sm border border-border rounded-full px-5 py-3 focus:ring-2 focus:ring-primary focus:outline-none"
+          />
+        </div>
+
+        <!-- FAQ Accordion -->
+        <div class="space-y-4">
+          <div
+            v-for="(faq, index) in filteredFaqs"
+            :key="index"
+            class="border border-border rounded-2xl overflow-hidden"
+          >
+            <button
+              @click="toggle(index)"
+              class="w-full flex justify-between items-center px-6 py-4 text-left font-semibold text-gray-800 hover:bg-gray-50 transition"
+            >
+              <span>{{ faq.question }}</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 transform transition-transform duration-200"
+                :class="{ 'rotate-180': activeIndex === index }"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+
+            <transition
+              enter-active-class="transition duration-300 ease-out"
+              enter-from-class="opacity-0 max-h-0"
+              enter-to-class="opacity-100 max-h-screen"
+              leave-active-class="transition duration-200 ease-in"
+              leave-from-class="opacity-100 max-h-screen"
+              leave-to-class="opacity-0 max-h-0"
+            >
+              <div
+                v-if="activeIndex === index"
+                class="px-6 pb-4 text-gray-600 bg-gray-50"
+              >
+                {{ faq.answer }}
+              </div>
+            </transition>
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <div
+          v-if="filteredFaqs.length === 0"
+          class="text-center mt-10 text-gray-500"
+        >
+          No results found for "<strong>{{ searchQuery }}</strong
+          >"
+        </div>
+      </template>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped></style>

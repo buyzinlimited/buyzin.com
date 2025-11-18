@@ -160,7 +160,7 @@ onMounted(() => {
                     class="size-4 mr-1 text-gray-400 group-hover:text-primary transition"
                   />
                   <NuxtLink
-                    to="/orders"
+                    to="/profile/orders"
                     class="hover:text-primary transition-colors duration-200"
                   >
                     My Orders

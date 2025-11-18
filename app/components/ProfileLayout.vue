@@ -2,6 +2,8 @@
 const route = useRoute();
 const authStore = useAuthStore();
 
+const { user } = storeToRefs(authStore);
+
 const logout = async () => {
   if (confirm("Are you sure you went to logout?")) {
     await authStore.logout();
@@ -16,13 +18,17 @@ const logout = async () => {
         class="bg-white w-80 max-w-full rounded-xl hidden md:block h-screen"
       >
         <div class="flex items-center gap-4 p-4 border-b border-border">
-          <img src="/avatar.png" alt="User" class="w-12 h-12 rounded-full" />
+          <NuxtImg
+            :src="user?.photo_url"
+            :alt="user?.name"
+            class="w-12 h-12 rounded-full"
+          />
           <div class="text-left">
-            <h5 class="font-semibold text-base">Ali Tufan</h5>
+            <h5 class="font-semibold text-base">{{ user?.name }}</h5>
             <a
               class="text-sm text-gray-500 truncate block"
               href="mailto:alitfn58@gmail.com"
-              >alitfn58@gmail.com</a
+              >{{ user?.email ?? "N/A" }}</a
             >
           </div>
         </div>
@@ -83,7 +89,7 @@ const logout = async () => {
             <button
               type="button"
               @click="logout"
-              class="w-full flex items-center gap-2 font-medium p-2 rounded hover:bg-gray-100"
+              class="w-full flex items-center gap-2 font-medium p-2 rounded text-red-500 hover:bg-gray-100"
             >
               <IconsIconLogout class="size-5" />
               <span>Logout</span>

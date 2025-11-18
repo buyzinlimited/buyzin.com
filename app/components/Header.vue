@@ -7,6 +7,8 @@ const authStore = useAuthStore();
 const cartStore = useCartStore();
 const collectionStore = useCollectionStore();
 
+const { user } = storeToRefs(authStore);
+
 const collections = ref([]);
 const profileRef = ref(null);
 const showProfileDropdown = ref(false);
@@ -158,16 +160,18 @@ const logout = async () => {
                   <div
                     class="flex items-center gap-3 border-b border-border px-4 py-2"
                   >
-                    <nuxt-img
-                      src="/avatar.png"
-                      alt="Avatar"
+                    <NuxtImg
+                      :src="user?.photo_url"
+                      :alt="user?.name"
                       class="w-10 h-10 rounded-full border border-border"
                     />
                     <div>
-                      <p class="text-sm font-semibold text-gray-800">
-                        Abu Toha
+                      <h4 class="text-sm font-semibold text-heading">
+                        {{ user?.name }}
+                      </h4>
+                      <p class="text-xs">
+                        {{ user?.email ?? "N/A" }}
                       </p>
-                      <p class="text-xs text-gray-500">01911742233</p>
                     </div>
                   </div>
 
