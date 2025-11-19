@@ -41,8 +41,8 @@ const addToCart = async () => {
     name: product.value.name,
     image_url: product.value.image_url,
     price: finalPrice,
-    variant_id: selectedVariant.value?.id || null,
-    variant_name: selectedVariant.value?.name || null,
+    store_id: product.value.store.id,
+    variant: selectedVariant.value?.name || null,
     sku: selectedVariant.value?.sku || null,
     quantity: 1,
   };

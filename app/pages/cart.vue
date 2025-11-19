@@ -30,12 +30,15 @@ useSchemaOrg([
   <main class="container mx-auto px-4 py-4">
     <div class="flex flex-wrap justify-between gap-6">
       <!-- Left side -->
-      <div class="bg-white rounded-xl grow p-4">
-        <!-- show EmptyCart only when no items -->
+      <div class="bg-white rounded-xl grow">
         <template v-if="items.length">
-          <div class="card">
-            <div class="card__header flex items-center justify-between">
-              <h3 class="card__title">Shopping Cart ({{ items.length }})</h3>
+          <div class="bg-white rounded-xl">
+            <div
+              class="px-4 py-3 border-b border-border flex items-center justify-between"
+            >
+              <h3 class="text-lg font-semibold text-heading">
+                Shopping Cart ({{ items.length }})
+              </h3>
               <button
                 type="button"
                 class="text-sm text-danger hover:text-danger/80"
@@ -45,7 +48,7 @@ useSchemaOrg([
               </button>
             </div>
 
-            <div class="card__body">
+            <div class="p-4 relative overflow-x-auto">
               <div class="flow-root">
                 <ul role="list" class="divide-y divide-gray-200 divide-dashed">
                   <li
@@ -148,12 +151,14 @@ useSchemaOrg([
 
       <!-- Right side (Summary) -->
       <div class="flex-none max-w-full">
-        <div class="card">
-          <div class="card__header">
-            <h3 class="card__title">Cart Summary</h3>
+        <div class="bg-white rounded-xl">
+          <div
+            class="px-4 py-3 border-b border-border flex items-center justify-between"
+          >
+            <h3 class="text-lg font-semibold text-heading">Cart Summary</h3>
           </div>
 
-          <div class="card__body space-y-4 border-b border-dashed">
+          <div class="p-4 space-y-4 border-b border-dashed">
             <div class="border-b border-dashed border-gray-300 pb-4">
               <label
                 class="text-sm font-medium mb-1 flex justify-between items-center"
@@ -199,16 +204,16 @@ useSchemaOrg([
               </div>
             </div>
 
-            <div class="py-2">
+            <div class="flex flex-col items-center gap-4">
               <NuxtLink
                 to="/checkout"
                 :disabled="!items?.length"
-                class="base__button w-full"
+                class="w-full px-4 py-2.5 text-sm text-center font-medium text-white bg-primary rounded hover:bg-primary focus:outline-none transition whitespace-nowrap disabled:opacity-50"
               >
                 Proceed to Checkout
               </NuxtLink>
 
-              <div class="mt-2 text-center text-sm text-gray-500">
+              <div class="text-center text-sm">
                 <p>
                   or
                   <NuxtLink

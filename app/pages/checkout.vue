@@ -81,12 +81,12 @@ const submit = async () => {
   <main class="container mx-auto px-4 py-4">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
       <!-- Shipping Info -->
-      <div class="card md:col-span-2">
-        <div class="card__header">
-          <h3 class="card__title">Shipping Address</h3>
+      <div class="bg-white rounded-xl md:col-span-2">
+        <div class="px-4 py-3 border-b border-border">
+          <h3 class="text-lg font-semibold text-heading">Shipping Address</h3>
         </div>
 
-        <div class="card__body space-y-4">
+        <div class="relative overflow-x-auto p-4 space-y-4">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <BaseInput
               label="Full Name"
@@ -151,12 +151,14 @@ const submit = async () => {
 
       <!-- Order Summary -->
       <div class="flex-none">
-        <div class="card">
-          <div class="card__header">
-            <h3 class="card__title">Order Summary</h3>
+        <div class="bg-white rounded-xl">
+          <div class="px-4 py-3 border-b border-border">
+            <h3 class="text-lg font-semibold text-heading">Order Summary</h3>
           </div>
 
-          <div class="card__body divide-y divide-dashed space-y-4">
+          <div
+            class="relative overflow-x-auto p-4 divide-y divide-dashed space-y-4"
+          >
             <!-- Cart Items -->
             <div class="space-y-2 py-4">
               <div
