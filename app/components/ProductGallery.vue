@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, computed, watch } from "vue";
 
 const props = defineProps({
   product: {
@@ -11,23 +11,44 @@ const props = defineProps({
 
 const mainImage = ref("");
 
+// Initialize mainImage when product changes
 watch(
   () => props.product,
   (newVal) => {
     if (newVal?.image_url) {
       mainImage.value = newVal.image_url;
+    } else if (newVal?.gallery?.length) {
+      mainImage.value = newVal.gallery[0];
+    } else {
+      mainImage.value = "";
     }
   },
   { immediate: true }
 );
 
+// Set main image on thumbnail or carousel click
 const setMainImage = (img) => {
   mainImage.value = img;
 };
 
-const hasVideo = computed(() => !!props.product?.video_url);
+// Carousel controls
+const onClickPrev = () => {
+  if (!props.product?.gallery?.length) return;
+  const index = props.product.gallery.indexOf(mainImage.value);
+  const prevIndex =
+    (index - 1 + props.product.gallery.length) % props.product.gallery.length;
+  mainImage.value = props.product.gallery[prevIndex];
+};
 
-// Convert video_url to embed URL
+const onClickNext = () => {
+  if (!props.product?.gallery?.length) return;
+  const index = props.product.gallery.indexOf(mainImage.value);
+  const nextIndex = (index + 1) % props.product.gallery.length;
+  mainImage.value = props.product.gallery[nextIndex];
+};
+
+// Video
+const hasVideo = computed(() => !!props.product?.video_url);
 const getEmbedUrl = (url) => {
   if (!url) return "";
   const videoId = url.split("v=")[1]?.split("&")[0];
@@ -46,8 +67,11 @@ const getEmbedUrl = (url) => {
         :src="mainImage"
         :alt="product?.name"
         loading="lazy"
+        format="webp"
         class="w-full h-full object-cover transition-all duration-300"
       />
+
+      <!-- Video overlay -->
       <div
         v-if="hasVideo"
         class="absolute inset-0 flex items-center justify-center cursor-pointer"
@@ -56,9 +80,7 @@ const getEmbedUrl = (url) => {
           <UModal>
             <UIcon name="i-lucide-play" class="size-10 text-white" />
             <template #content>
-              <div
-                class="relative w-full max-w-3xl aspect-video bg-black rounded-lg"
-              >
+              <div class="relative w-full aspect-video bg-black rounded-lg">
                 <iframe
                   :src="getEmbedUrl(product.video_url)"
                   class="w-full h-full"
@@ -73,26 +95,26 @@ const getEmbedUrl = (url) => {
       </div>
     </div>
 
-    <!-- Thumbnails -->
+    <!-- Carousel -->
     <div class="mt-4" v-if="product?.gallery?.length">
-      <ol class="flex space-x-2 overflow-x-auto">
-        <li
-          v-for="(gallery, index) in product.gallery"
-          :key="index"
-          @click="setMainImage(gallery)"
-          class="size-28 border-2 rounded overflow-hidden cursor-pointer transition-all duration-200"
+      <UCarousel
+        v-slot="{ item }"
+        :items="product.gallery"
+        :prev="{ onClick: onClickPrev }"
+        :next="{ onClick: onClickNext }"
+        class="w-full mx-auto"
+        :ui="{ item: 'basis-1/4' }"
+      >
+        <img
+          :src="item"
+          class="rounded cursor-pointer overflow-hidden transition-all duration-200 border-2"
           :class="{
-            'border-primary': mainImage === gallery,
-            'border-gray-200': mainImage !== gallery,
+            'border-primary': mainImage === item,
+            'border-gray-200': mainImage !== item,
           }"
-        >
-          <img
-            :src="gallery"
-            :alt="product?.name"
-            class="w-full h-full object-cover hover:scale-105 transition-transform duration-200 p-2"
-          />
-        </li>
-      </ol>
+          @click="setMainImage(item)"
+        />
+      </UCarousel>
     </div>
   </div>
 </template>

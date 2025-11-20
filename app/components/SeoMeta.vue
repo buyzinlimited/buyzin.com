@@ -8,7 +8,7 @@ const props = defineProps({
   },
   image: {
     type: String,
-    default: "https://www.buyzin.com/images/buyzin-logo-social.png",
+    default: "/logo-social.png",
   },
   url: {
     type: String,
@@ -40,8 +40,8 @@ const props = defineProps({
 
     <!-- Twitter -->
     <Meta name="twitter:card" content="summary_large_image" />
-    <Meta name="twitter:site" content="@buyzin" />
-    <Meta name="twitter:creator" content="@buyzin" />
+    <Meta name="twitter:site" content="@BuyzinLimited" />
+    <Meta name="twitter:creator" content="@BuyzinLimited" />
     <Meta name="twitter:title" :content="props.title" />
     <Meta name="twitter:description" :content="props.description" />
     <Meta name="twitter:image" :content="props.image" />
