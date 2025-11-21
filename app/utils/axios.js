@@ -36,6 +36,7 @@ apiClient.interceptors.response.use(
       authStore.$reset();
       return navigateTo("/auth/login");
     }
+
     return Promise.reject(error);
   }
 );

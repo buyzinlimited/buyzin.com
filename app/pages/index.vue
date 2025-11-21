@@ -1,6 +1,5 @@
 <script setup>
 import { useAppStore } from "@/stores/app";
-import { tr } from "@nuxt/ui/runtime/locale/index.js";
 import SeoMeta from "~/components/SeoMeta.vue";
 const appStore = useAppStore();
 
@@ -14,15 +13,6 @@ const loadHome = async () => {
 onMounted(() => {
   loadHome();
 });
-
-const items = [
-  "https://picsum.photos/640/640?random=1",
-  "https://picsum.photos/640/640?random=2",
-  "https://picsum.photos/640/640?random=3",
-  "https://picsum.photos/640/640?random=4",
-  "https://picsum.photos/640/640?random=5",
-  "https://picsum.photos/640/640?random=6",
-];
 </script>
 
 <template>
@@ -39,19 +29,19 @@ const items = [
         <UCarousel
           v-slot="{ item }"
           loop
-          fade
           dots
           :items="home.banners"
           :autoplay="{ delay: 2000 }"
           class="w-full mx-auto"
         >
-          <NuxtLink :to="item.target_url">
-            <img
-              :src="item.image_url"
-              :alt="item.name"
+          <a :href="item?.target_url" target="_blank" rel="noopener noreferrer">
+            <NuxtImg
+              :src="item?.image_url"
+              :alt="item?.name"
+              loading="lazy"
               class="rounded-lg w-full object-cover z-10"
             />
-          </NuxtLink>
+          </a>
         </UCarousel>
       </div>
       <!-- Loading skeleton -->

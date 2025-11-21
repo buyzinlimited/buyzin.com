@@ -9,7 +9,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <footer class="bg-white">
+  <footer class="bg-white z-10">
     <div class="bg-primary text-white py-8 md:py-10 lg:py-12">
       <div class="max-w-7xl mx-auto px-4">
         <div

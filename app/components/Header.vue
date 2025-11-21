@@ -50,15 +50,23 @@ const logout = async () => {
     await authStore.logout();
   }
 };
+
+const open = ref(false);
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 bg-white">
+  <header class="sticky top-0 z-30 bg-white">
     <!-- Top Section -->
     <div class="max-w-7xl mx-auto px-4 py-2.5">
       <div class="flex items-center justify-between">
-        <!-- Mobile Navigation  -->
-        <MobileNavigation class="block md:hidden" />
+        <!-- Mobile Menu Button -->
+        <button
+          type="button"
+          class="p-2 rounded hover:text-primary hover:bg-gray-100 md:hidden"
+          @click="open = true"
+        >
+          <IconsIconBar class="size-6" />
+        </button>
 
         <!-- Logo -->
         <div class="flex-none">
@@ -311,6 +319,9 @@ const logout = async () => {
       </div>
     </div>
   </nav>
+
+  <!-- Mobile Navigation  -->
+  <MobileNavigation :open="open" @close="open = false" />
 </template>
 
 <style scoped></style>
