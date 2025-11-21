@@ -249,24 +249,32 @@ const copyToClipboard = () => {
                 <div v-html="product?.overview"></div>
               </div>
 
-              <div class="text-4xl font-bold text-red-600">
-                <div v-if="product?.price" class="space-x-2">
-                  <del
-                    class="text-body font-body font-semibold text-xl line-through"
-                  >
-                    {{ product?.currency_symbol }}{{ product?.base_price }}
-                  </del>
-                  <span class="text-primary font-body font-semibold text-2xl"
-                    >{{ product?.currency_symbol }}{{ product?.price }}</span
-                  >
+              <template v-if="selectedVariant === null">
+                <div class="text-4xl font-bold text-red-600">
+                  <div v-if="product?.price" class="space-x-2">
+                    <del
+                      class="text-body font-body font-semibold text-xl line-through"
+                    >
+                      {{ product?.currency_symbol }}{{ product?.base_price }}
+                    </del>
+                    <span class="text-primary font-body font-semibold text-2xl"
+                      >{{ product?.currency_symbol }}{{ product?.price }}</span
+                    >
+                  </div>
+                  <div v-else>
+                    <span class="text-gray-900"
+                      >{{ product?.currency_symbol
+                      }}{{ product?.base_price }}</span
+                    >
+                  </div>
                 </div>
-                <div v-else>
-                  <span class="text-gray-900"
-                    >{{ product?.currency_symbol
-                    }}{{ product?.base_price }}</span
-                  >
-                </div>
-              </div>
+              </template>
+              <template v-else>
+                <span class="text-primary font-body font-semibold text-2xl"
+                  >{{ product?.currency_symbol
+                  }}{{ selectedVariant?.price }}</span
+                >
+              </template>
 
               <!-- Variants -->
               <div v-if="product?.has_variant">

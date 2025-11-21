@@ -12,7 +12,9 @@ onMounted(() => {
   <footer class="bg-white">
     <div class="bg-primary text-white py-8 md:py-10 lg:py-12">
       <div class="max-w-7xl mx-auto px-4">
-        <div class="flex flex-wrap items-center justify-between md:gap-16">
+        <div
+          class="flex flex-wrap items-center justify-between gap-4 md:gap-16"
+        >
           <div class="grow max-w-sm">
             <h3 class="font-semibold text-xl md:text-2xl">
               Join 2,000+ fashion lovers & get exclusive updates

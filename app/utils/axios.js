@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "https://buyzin.ashikahmed.net", // http://127.0.0.1:8000  https://buyzin.ashikahmed.net
+  baseURL: "http://127.0.0.1:8000", // http://127.0.0.1:8000  https://buyzin.ashikahmed.net
   headers: {
     "Content-type": "application/json",
     Author: "Ashik Ahmed",

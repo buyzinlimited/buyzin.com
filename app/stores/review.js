@@ -22,5 +22,33 @@ export const useReviewStore = defineStore("review", {
         }
       }
     },
+
+    async like(review) {
+      try {
+        const response = await apiClient.post(`/api/reviews/${review}/like`);
+        if (response.status === 200) {
+          review.helpful_count++;
+          return Promise.resolve(response);
+        }
+      } catch (error) {
+        if (error.response) {
+          return Promise.reject(error.response);
+        }
+      }
+    },
+
+    async unlike(review) {
+      try {
+        const response = await apiClient.post(`/api/reviews/${review}/unlike`);
+        if (response.status === 200) {
+          review.not_helpful_count++;
+          return Promise.resolve(response);
+        }
+      } catch (error) {
+        if (error.response) {
+          return Promise.reject(error.response);
+        }
+      }
+    },
   },
 });
