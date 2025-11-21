@@ -12,13 +12,38 @@ onMounted(() => {
   <footer class="bg-white">
     <div class="bg-primary text-white py-8 md:py-10 lg:py-12">
       <div class="max-w-7xl mx-auto px-4">
-        <h3 class="font-semibold text-xl">
-          More brands than any other fashion retailer
-        </h3>
-        <span class="text-xs">
-          Explore almost 2,000 brands from High Street to High End-Free Shipping
-          & Returns
-        </span>
+        <div class="flex flex-wrap items-center justify-between gap-10">
+          <div class="grow max-w-sm">
+            <h3 class="font-semibold text-xl md:text-2xl">
+              Join 2,000+ fashion lovers & get exclusive updates
+            </h3>
+            <p class="text-xs md:text-sm mt-1 opacity-90">
+              Subscribe with your email to receive new arrivals, brand drops,
+              and special discounts — straight to your inbox.
+            </p>
+          </div>
+
+          <div class="flex-none">
+            <form class="flex items-center gap-2 bg-white rounded p-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="w-full min-w-xs max-w-sm px-3 py-2 rounded text-body text-sm focus:outline-none"
+              />
+
+              <button
+                type="submit"
+                class="bg-primary text-white font-semibold px-4 py-2 rounded whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+
+            <p class="text-xs mt-1 opacity-70">
+              Get the latest offers, promotions & new arrivals
+            </p>
+          </div>
+        </div>
       </div>
     </div>
 

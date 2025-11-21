@@ -417,6 +417,9 @@ const items = [
               <div class="h-4 w-1/2 bg-gray-200 rounded"></div>
             </div>
           </div>
+          <div class="flex items-center justify-center py-10">
+            <div class="h-10 w-28 bg-gray-200 rounded"></div>
+          </div>
         </template>
       </div>
     </section>

@@ -1,5 +1,4 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { useCollectionStore } from "@/stores/collection";
 
@@ -58,14 +57,8 @@ const logout = async () => {
     <!-- Top Section -->
     <div class="max-w-7xl mx-auto px-4 py-2.5">
       <div class="flex items-center justify-between">
-        <!-- Mobile Navigation -->
-        <button
-          type="button"
-          @click="toggleNavigation"
-          class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-primary hover:bg-gray-100 lg:hidden"
-        >
-          <icons-icon-bar class="size-6" />
-        </button>
+        <!-- Mobile Navigation  -->
+        <MobileNavigation class="block md:hidden" />
 
         <!-- Logo -->
         <div class="flex-none">
