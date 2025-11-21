@@ -8,21 +8,6 @@ const form = ref({
   store_name: "",
   message: "",
 });
-
-const submitting = ref(false);
-const success = ref(false);
-
-const submitForm = async () => {
-  submitting.value = true;
-  success.value = false;
-  try {
-    // Replace with your API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    success.value = true;
-  } finally {
-    submitting.value = false;
-  }
-};
 </script>
 
 <template>
@@ -35,7 +20,7 @@ const submitForm = async () => {
   <main class="max-w-7xl mx-auto px-4 py-4">
     <!-- Breadcrumb Section -->
     <section class="bg-[url('/bg-vendor.jpg')] py-16 md:py-32">
-      <div class="container mx-auto px-4">
+      <div class="mx-auto px-4">
         <div class="flex flex-col lg:flex-row lg:items-center">
           <div class="lg:w-7/12">
             <div class="space-y-4">
@@ -59,7 +44,7 @@ const submitForm = async () => {
 
     <!-- Why Become Seller Section -->
     <section class="py-16">
-      <div class="container mx-auto px-4 space-y-12">
+      <div class="mx-auto px-4 space-y-12">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div class="lg:col-span-5 lg:col-start-2 space-y-4">
             <h2 class="text-3xl font-bold">
@@ -190,7 +175,7 @@ const submitForm = async () => {
 
     <!-- FAQ Section -->
     <section class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4">
+      <div class="mx-auto px-4">
         <div class="text-center mb-12">
           <h2 class="text-3xl font-bold">Frequently Asked Questions</h2>
         </div>
@@ -248,16 +233,16 @@ const submitForm = async () => {
 
     <!-- Banner Section -->
     <section class="bg-cyan-100 py-16">
-      <div class="container mx-auto px-4">
+      <div class="mx-auto px-4">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           <div class="lg:col-span-5 lg:col-start-2 space-y-4">
             <h2 class="text-3xl font-bold">Start selling today</h2>
             <p class="text-gray-600">
               Put your products in front of the millions of customers who search
-              Zenmart.com every day.
+              buyzin.com every day.
             </p>
             <a
-              href="page-register.html"
+              href="#"
               class="inline-block bg-primary text-white px-6 py-3 rounded hover:bg-primary/90 transition"
               >Sign up</a
             >

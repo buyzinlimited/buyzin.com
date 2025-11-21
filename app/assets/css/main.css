@@ -124,46 +124,6 @@
     @apply bg-gray-800 text-white;
   }
 
-  .nav {
-    @apply overflow-y-auto;
-  }
-
-  .nav ul {
-    @apply px-2;
-  }
-
-  .nav__item {
-    @apply hover:bg-gray-100 rounded transition duration-100;
-  }
-
-  .nav__link {
-    @apply hover:bg-gray-100 flex items-center justify-start relative p-2 rounded transition duration-150;
-  }
-
-  .nav__link span {
-    @apply ml-2;
-  }
-
-  .has-children > .nav__link::after {
-    content: "\f105";
-    font-family: "Line Awesome Free";
-    font-weight: 900;
-    position: absolute;
-    right: 0.75rem;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1rem;
-    transition: transform 0.3s ease;
-  }
-
-  .has-children > .nav__link.rotate::after {
-    transform: translateY(-50%) rotate(90deg);
-  }
-
-  .active__link {
-    color: var(--color-primary);
-  }
-
   .card {
     @apply bg-white rounded-xl;
   }
@@ -181,74 +141,5 @@
 
   .card__body {
     @apply p-4 text-gray-700 relative overflow-x-auto;
-  }
-
-  table {
-    @apply min-w-full text-sm text-left text-gray-700 border-collapse;
-  }
-
-  thead tr {
-    @apply bg-gray-50 text-gray-600 uppercase text-xs border-b;
-  }
-
-  th,
-  td {
-    @apply px-4 py-2;
-  }
-
-  tbody tr {
-    @apply border-b hover:bg-gray-50;
-  }
-
-  tbody td span {
-    @apply inline-block;
-  }
-
-  tbody td:last-child span {
-    @apply inline-flex space-x-2 text-right;
-  }
-
-  tbody td:last-child span > * {
-    @apply p-1 rounded bg-gray-100 hover:bg-gray-200;
-  }
-
-  tbody td:last-child span > * i {
-    @apply text-lg text-gray-600;
-  }
-
-  .search__wrapper {
-    @apply flex items-center gap-6 py-4;
-  }
-
-  .search__container {
-    @apply relative flex-grow;
-  }
-
-  .search__input {
-    @apply w-full px-4 py-1 rounded border invalid:border-red-500 invalid:text-red-600 focus:border-primary focus:outline focus:outline-primary focus:invalid:border-red-500 focus:invalid:outline-red-500 disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none;
-  }
-
-  .search__dropdown {
-    @apply absolute w-full max-w-xl z-10 bg-white shadow rounded border border-gray-200 max-h-60 overflow-y-auto;
-  }
-
-  .search__item {
-    @apply px-4 py-2 hover:bg-gray-100 cursor-pointer;
-  }
-
-  .user__action {
-    @apply bg-light p-2 rounded-full;
-  }
-
-  .sidebar__item {
-    @apply flex items-center gap-2 py-2 hover:text-primary transition;
-  }
-
-  .link__active {
-    @apply text-primary;
-  }
-
-  .link__exact__active {
-    @apply text-primary border-l-3 border-primary pl-2 bg-gray-100;
   }
 }

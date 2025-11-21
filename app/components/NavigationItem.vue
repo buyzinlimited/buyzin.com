@@ -41,8 +41,8 @@ const toggle = () => {
 
       <!-- Right Arrow -->
       <div v-if="item.children && item.children.length">
-        <ChevronDown v-if="isOpen" class="w-4 h-4" />
-        <ChevronRight v-else class="w-4 h-4" />
+        <IconsIconChevronDown v-if="isOpen" class="w-4 h-4" />
+        <IconsIconChevronRight v-else class="w-4 h-4" />
       </div>
     </div>
 

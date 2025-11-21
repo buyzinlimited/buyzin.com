@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from "vue";
-
+const { $settings } = useNuxtApp();
 const form = ref({
   name: "",
   email: "",
@@ -24,7 +23,7 @@ const handleSubmit = () => {
     keywords="Buyzin Contact Us, customer support Bangladesh, online shopping help, ecommerce support Bangladesh, order inquiries, Buyzin support"
   />
 
-  <section class="max-w-6xl mx-auto py-16">
+  <main class="max-w-7xl mx-auto px-4 py-6">
     <div class="text-center mb-12">
       <h1 class="text-4xl font-bold mb-3 text-gray-800">Contact Us</h1>
       <p class="text-gray-600 max-w-2xl mx-auto">
@@ -41,43 +40,51 @@ const handleSubmit = () => {
         </h2>
 
         <form @submit.prevent="handleSubmit" class="space-y-5">
-          <div class="form__group">
-            <label class="form__label">Your Name</label>
+          <div class="relative block mb-2">
+            <label class="block mb-2 text-sm text-dark capitalize font-medium"
+              >Your Name</label
+            >
             <input
               v-model="form.name"
               type="text"
               required
-              class="form__control"
+              class="w-full px-4 py-2 text-sm rounded border border-border focus:border-primary focus:outline-none focus:outline-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
             />
           </div>
 
-          <div class="form__group">
-            <label class="form__label">Email Address</label>
+          <div class="relative block mb-2">
+            <label class="block mb-2 text-sm text-dark capitalize font-medium"
+              >Email Address</label
+            >
             <input
               v-model="form.email"
               type="email"
               required
-              class="form__control"
+              class="w-full px-4 py-2 text-sm rounded border border-border focus:border-primary focus:outline-none focus:outline-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
             />
           </div>
 
-          <div class="form__group">
-            <label class="form__label">Subject</label>
+          <div class="relative block mb-2">
+            <label class="block mb-2 text-sm text-dark capitalize font-medium"
+              >Subject</label
+            >
             <input
               v-model="form.subject"
               type="text"
               required
-              class="form__control"
+              class="w-full px-4 py-2 text-sm rounded border border-border focus:border-primary focus:outline-none focus:outline-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
             />
           </div>
 
-          <div class="form__group">
-            <label class="form__label">Message</label>
+          <div class="relative block mb-2">
+            <label class="block mb-2 text-sm text-dark capitalize font-medium"
+              >Message</label
+            >
             <textarea
               v-model="form.message"
               rows="5"
               required
-              class="form__control"
+              class="w-full px-4 py-2 text-sm rounded border border-border focus:border-primary focus:outline-none focus:outline-primary disabled:border-gray-200 disabled:bg-gray-50 disabled:text-gray-500 disabled:shadow-none"
             ></textarea>
           </div>
 
@@ -113,7 +120,7 @@ const handleSubmit = () => {
             </span>
             <div>
               <p class="font-semibold">Email</p>
-              <p>support@buyzin.com</p>
+              <p>{{ $settings?.contact?.email }}</p>
             </div>
           </div>
 
@@ -125,7 +132,7 @@ const handleSubmit = () => {
             </span>
             <div>
               <p class="font-semibold">Phone</p>
-              <p>+880 1234 567890</p>
+              <p>{{ $settings?.contact?.phone }}</p>
             </div>
           </div>
 
@@ -137,7 +144,7 @@ const handleSubmit = () => {
             </span>
             <div>
               <p class="font-semibold">Address</p>
-              <p>House 12, Road 5, Dhanmondi, Dhaka, Bangladesh</p>
+              <p v-html="$settings?.contact?.address"></p>
             </div>
           </div>
         </div>
@@ -153,5 +160,5 @@ const handleSubmit = () => {
         ></iframe>
       </div>
     </div>
-  </section>
+  </main>
 </template>
