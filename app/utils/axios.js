@@ -10,7 +10,6 @@ const apiClient = axios.create({
   withXSRFToken: false,
 });
 
-// Add a request interceptor
 // Interceptor for request
 apiClient.interceptors.request.use(
   (config) => {

@@ -23,14 +23,26 @@ const addToWishlist = async (product) => {
   <article
     class="bg-white border border-border rounded-lg overflow-hidden relative"
   >
-    <div class="flex items-center justify-between p-2 absolute z-20">
-      <span
-        class="text-xs font-semibold px-2 py-1 rounded-l rounded-r-full bg-red-100 text-red-500"
-        v-if="product.price && product.base_price > product.price"
-      >
-        {{ product.currency_symbol
-        }}{{ product.base_price - product.price }} OFF
-      </span>
+    <div class="w-full p-2 absolute z-20">
+      <div class="flex justify-between">
+        <div class="flex items-start">
+          <span
+            v-if="product.price && product.base_price > product.price"
+            class="text-xs font-semibold px-2 py-1 rounded-l rounded-r-full bg-red-100 text-red-500"
+          >
+            {{ product.currency_symbol
+            }}{{ product.base_price - product.price }} OFF
+          </span>
+        </div>
+
+        <button
+          type="button"
+          @click="addToWishlist(product)"
+          class="flex items-end hover:text-primary transition duration-150"
+        >
+          <IconsIconHeart class="size-5" />
+        </button>
+      </div>
     </div>
 
     <NuxtLink
@@ -56,21 +68,6 @@ const addToWishlist = async (product) => {
         </h3>
       </NuxtLink>
 
-      <div class="flex items-center gap-1">
-        <div class="flex items-center gap-0.5">
-          <template v-for="i in 5" :key="i">
-            <IconsIconStarFill
-              v-if="i <= Math.floor(product.rating)"
-              class="icon__star filled"
-            />
-            <IconsIconStar v-else class="icon__star" />
-          </template>
-        </div>
-        <span class="text-sm text-body"
-          >{{ product.review_count ?? 0 }} reviews</span
-        >
-      </div>
-
       <div class="flex items-center justify-between py-2">
         <div class="flex items-center gap-2">
           <div v-if="product.price" class="space-x-2">
@@ -88,13 +85,13 @@ const addToWishlist = async (product) => {
           </div>
         </div>
 
-        <button
-          type="button"
-          @click="addToWishlist(product)"
-          class="hover:text-primary transition duration-150"
-        >
-          <IconsIconHeart class="size-6" />
-        </button>
+        <div class="flex items-center gap-1">
+          <IconsIconStarFill class="size-4 text-yellow-400" />
+          <span class="after:content-['·'] after:mx-1">{{
+            product.rating
+          }}</span>
+          <span>{{ product.review_count ?? 0 }}</span>
+        </div>
       </div>
     </div>
   </article>
