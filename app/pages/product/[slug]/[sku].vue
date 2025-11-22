@@ -270,10 +270,26 @@ const copyToClipboard = () => {
                 </div>
               </template>
               <template v-else>
-                <span class="text-primary font-body font-semibold text-2xl"
-                  >{{ product?.currency_symbol
-                  }}{{ selectedVariant?.price }}</span
-                >
+                <div class="text-4xl font-bold text-red-600">
+                  <div v-if="selectedVariant?.price" class="space-x-2">
+                    <del
+                      class="text-body font-body font-semibold text-xl line-through"
+                    >
+                      {{ product?.currency_symbol
+                      }}{{ selectedVariant?.base_price }}
+                    </del>
+                    <span class="text-primary font-body font-semibold text-2xl"
+                      >{{ product?.currency_symbol
+                      }}{{ selectedVariant?.price }}</span
+                    >
+                  </div>
+                  <div v-else>
+                    <span class="text-gray-900"
+                      >{{ product?.currency_symbol
+                      }}{{ selectedVariant?.base_price }}</span
+                    >
+                  </div>
+                </div>
               </template>
 
               <!-- Variants -->
@@ -291,9 +307,10 @@ const copyToClipboard = () => {
                         : 'bg-white text-gray-800 border-gray-300 hover:bg-gray-100',
                     ]"
                   >
-                    <img
-                      :src="variant.image_url"
-                      alt="variant.name"
+                    <NuxtImg
+                      :src="variant.cover_url"
+                      :alt="variant.name"
+                      loading="lazy"
                       class="w-8 h-8 object-cover rounded"
                     />
 

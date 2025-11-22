@@ -29,6 +29,7 @@ onMounted(() => {
         <UCarousel
           v-slot="{ item }"
           loop
+          fade
           dots
           :items="home.banners"
           :autoplay="{ delay: 2000 }"

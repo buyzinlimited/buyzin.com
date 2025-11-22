@@ -1,11 +1,21 @@
 <script setup>
+import { main } from "#build/ui";
+
 defineProps({
   error: Object,
 });
 </script>
 
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+  <Head>
+    <Title>404 - Page Not Found | Buyzin</Title>
+    <Meta
+      name="description"
+      content="Oops! The page you are looking for does not exist on Buyzin. Return to the homepage to continue shopping safely and easily."
+    />
+    <Meta name="robots" content="noindex, follow" />
+  </Head>
+  <main class="min-h-screen flex items-center justify-center bg-gray-50 px-4">
     <div
       class="grid grid-cols-1 xl:grid-cols-2 gap-8 items-center max-w-7xl w-full"
     >
@@ -39,7 +49,7 @@ defineProps({
         </NuxtLink>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <style scoped>

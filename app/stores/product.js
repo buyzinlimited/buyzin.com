@@ -6,7 +6,6 @@ export const useProductStore = defineStore("product", {
     loading: false,
     errors: [],
     product: null,
-    related: [],
   }),
 
   getters: {},
@@ -32,6 +31,7 @@ export const useProductStore = defineStore("product", {
       try {
         const response = await apiClient.get(`/api/products/${slug}/${sku}`);
         if (response.status === 200) {
+          this.product = response.data;
           return Promise.resolve(response.data);
         }
       } catch (error) {

@@ -15,8 +15,8 @@ const mainImage = ref("");
 watch(
   () => props.product,
   (newVal) => {
-    if (newVal?.image_url) {
-      mainImage.value = newVal.image_url;
+    if (newVal?.cover_url) {
+      mainImage.value = newVal.cover_url;
     } else if (newVal?.gallery?.length) {
       mainImage.value = newVal.gallery[0];
     } else {
